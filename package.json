@@ -12,5 +12,8 @@
     "@nx/workspace": "20.4.2",
     "nx": "20.4.2"
   },
-  "packageManager": "yarn@4.5.1"
+  "packageManager": "yarn@4.5.1",
+  "dependencies": {
+    "prettier": "^3.4.2"
+  }
 }
