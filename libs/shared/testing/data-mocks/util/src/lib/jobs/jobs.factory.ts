@@ -1,4 +1,4 @@
-import { IJob } from '@portfolio/domain-interfaces';
+import { IJob } from '@portfolio/common-models';
 import { faker } from '@faker-js/faker';
 
 export const jobFactory = (options?: Partial<IJob>): IJob => {

@@ -1,4 +1,4 @@
-import { IPermission, IRole } from '@portfolio/domain-interfaces';
+import { IPermission, IRole } from '@portfolio/common-models';
 import { Type } from 'class-transformer';
 import { ValidateNested, IsOptional, IsString, IsArray } from 'class-validator';
 import { UpdateRoleDto } from './update-role.dto';

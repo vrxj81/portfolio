@@ -1,13 +1,13 @@
 {
-  "name": "@portfolio/domain-dtos",
+  "name": "@portfolio/common-dtos",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
   "dependencies": {
-    "@portfolio/domain-interfaces": "0.0.1",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1"
+    "class-validator": "^0.14.1",
+    "@portfolio/common-models": "0.0.1"
   }
 }

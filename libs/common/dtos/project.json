@@ -1,0 +1,9 @@
+{
+  "name": "common-dtos",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common/dtos/src",
+  "projectType": "library",
+  "tags": ["scope:domain", "type:DTOs"],
+  "// targets": "to see all targets run: nx show project common-dtos --web",
+  "targets": {}
+}
