@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@portfolio/domain-dtos": ["libs/shared/domain/dtos/src/index.ts"],
       "@portfolio/domain-interfaces": [
         "libs/shared/domain/interfaces/src/index.ts"
       ]

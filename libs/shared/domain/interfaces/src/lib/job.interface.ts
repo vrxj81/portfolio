@@ -23,4 +23,6 @@ export interface IJob {
   responsibilities: string[];
   recruiter?: IRecruiterProfile;
   applicants?: IApplicantProfile[];
+  createdAt: Date;
+  updatedAt: Date;
 }
