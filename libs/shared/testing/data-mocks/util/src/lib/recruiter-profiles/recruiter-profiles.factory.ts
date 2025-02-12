@@ -1,4 +1,4 @@
-import { IRecruiterProfile } from '@portfolio/domain-interfaces';
+import { IRecruiterProfile } from '@portfolio/common-models';
 import { faker } from '@faker-js/faker';
 
 export const recruiterProfileFactory = (

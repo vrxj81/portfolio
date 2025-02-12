@@ -1,4 +1,4 @@
-import { IRole } from '@portfolio/domain-interfaces';
+import { IRole } from '@portfolio/common-models';
 import { faker } from '@faker-js/faker';
 
 export const roleFactory = (options?: Partial<IRole>): IRole => {

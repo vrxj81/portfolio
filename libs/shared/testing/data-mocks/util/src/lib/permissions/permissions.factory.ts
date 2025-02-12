@@ -1,4 +1,4 @@
-import { IPermission } from '@portfolio/domain-interfaces';
+import { IPermission } from '@portfolio/common-models';
 import { faker } from '@faker-js/faker';
 
 export const permissionFactory = (

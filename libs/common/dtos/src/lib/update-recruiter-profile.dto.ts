@@ -1,4 +1,4 @@
-import { IRecruiterProfile, IUser } from '@portfolio/domain-interfaces';
+import { IRecruiterProfile, IUser } from '@portfolio/common-models';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested, IsString } from 'class-validator';
 import { UpdateUserDto } from './update-user.dto';

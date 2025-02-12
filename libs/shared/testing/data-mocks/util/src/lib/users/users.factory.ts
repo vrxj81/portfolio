@@ -1,4 +1,4 @@
-import { IUser } from '@portfolio/domain-interfaces';
+import { IUser } from '@portfolio/common-models';
 import { faker } from '@faker-js/faker';
 
 export const userFactory = (options?: Partial<IUser>): IUser => {

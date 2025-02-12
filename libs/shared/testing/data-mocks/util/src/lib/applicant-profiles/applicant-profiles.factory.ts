@@ -1,4 +1,4 @@
-import { IApplicantProfile } from '@portfolio/domain-interfaces';
+import { IApplicantProfile } from '@portfolio/common-models';
 import { faker } from '@faker-js/faker';
 
 export const applicantProfileFactory = (

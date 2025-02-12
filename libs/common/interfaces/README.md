@@ -1,7 +1,7 @@
-# domain-dtos
+# common-models
 
 This library was generated with [Nx](https://nx.dev).
 
 ## Building
 
-Run `nx build domain-dtos` to build the library.
+Run `nx build common-models` to build the library.

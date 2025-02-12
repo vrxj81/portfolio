@@ -1,0 +1,9 @@
+{
+  "name": "common-models",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/common/interfaces/src",
+  "projectType": "library",
+  "tags": ["scope:domain", "type:interfaces"],
+  "// targets": "to see all targets run: nx show project common-models --web",
+  "targets": {}
+}

@@ -2,7 +2,7 @@ import {
   IJob,
   IRecruiterProfile,
   IApplicantProfile,
-} from '@portfolio/domain-interfaces';
+} from '@portfolio/common-models';
 import { Type } from 'class-transformer';
 import {
   IsArray,
