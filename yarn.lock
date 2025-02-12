@@ -1729,6 +1729,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^9.5.0":
+  version: 9.5.0
+  resolution: "@faker-js/faker@npm:9.5.0"
+  checksum: 10c0/97c983e0752e36bd2322fe0bda273e41093ae868452811b3146d33412147a03b343a6720a2e388d4c4a06c5c6ce89cad9e6c2c363008ef061a26c4fce067c22d
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -3254,6 +3261,7 @@ __metadata:
   dependencies:
     "@angular-devkit/core": "npm:~19.1.0"
     "@eslint/js": "npm:^9.8.0"
+    "@faker-js/faker": "npm:^9.5.0"
     "@nestjs/schematics": "npm:^10.0.1"
     "@nx/angular": "npm:20.4.2"
     "@nx/eslint": "npm:20.4.2"

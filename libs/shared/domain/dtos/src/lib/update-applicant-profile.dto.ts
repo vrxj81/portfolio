@@ -13,6 +13,10 @@ export class UpdateApplicantProfileDto
 
   @IsOptional()
   @IsString()
+  fullName?: string;
+
+  @IsOptional()
+  @IsString()
   resumeUrl?: string;
 
   @IsOptional()

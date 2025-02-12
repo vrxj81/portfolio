@@ -13,6 +13,10 @@ export class UpdateRecruiterProfileDto
 
   @IsOptional()
   @IsString()
+  fullName?: string;
+
+  @IsOptional()
+  @IsString()
   company?: string;
 
   @IsOptional()

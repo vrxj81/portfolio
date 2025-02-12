@@ -1,0 +1,9 @@
+{
+  "name": "testing-data-mocks-util",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/testing/data-mocks/util/src",
+  "projectType": "library",
+  "tags": ["scope:testing", "type:util", "domain:data-mocks"],
+  "// targets": "to see all targets run: nx show project testing-data-mocks-util --web",
+  "targets": {}
+}

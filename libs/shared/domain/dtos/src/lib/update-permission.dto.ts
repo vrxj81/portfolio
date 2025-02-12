@@ -8,6 +8,10 @@ export class UpdatePermissionDto
 {
   @IsOptional()
   @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
   action?: string;
 
   @IsOptional()

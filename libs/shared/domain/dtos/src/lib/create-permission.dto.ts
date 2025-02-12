@@ -13,6 +13,9 @@ export class CreatePermissionDto
   implements Omit<IPermission, 'id' | 'createdAt' | 'updatedAt'>
 {
   @IsString()
+  name!: string;
+
+  @IsString()
   action!: string;
 
   @IsString()
