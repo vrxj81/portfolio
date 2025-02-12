@@ -6,7 +6,7 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "dependencies": {
-    "@portfolio/domain-interfaces": "0.0.1",
-    "@faker-js/faker": "^9.5.0"
+    "@faker-js/faker": "^9.5.0",
+    "@portfolio/common-models": "0.0.1"
   }
 }
