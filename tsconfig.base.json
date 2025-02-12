@@ -18,6 +18,9 @@
       "@portfolio/auth-frontend-ng-data-access": [
         "libs/auth/frontend/ng/data-access/src/index.ts"
       ],
+      "@portfolio/auth-frontend-ng-state": [
+        "libs/auth/frontend/ng/state/src/index.ts"
+      ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
       "@portfolio/testing-data-mocks-util": [
