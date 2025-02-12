@@ -15,10 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@portfolio/domain-dtos": ["libs/shared/domain/dtos/src/index.ts"],
-      "@portfolio/domain-interfaces": [
-        "libs/shared/domain/interfaces/src/index.ts"
-      ],
+      "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
+      "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
       "@portfolio/testing-data-mocks-util": [
         "libs/shared/testing/data-mocks/util/src/index.ts"
       ]

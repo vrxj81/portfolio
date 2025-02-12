@@ -1,4 +1,4 @@
-import { IRole, IUser } from '@portfolio/domain-interfaces';
+import { IRole, IUser } from '@portfolio/common-models';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,

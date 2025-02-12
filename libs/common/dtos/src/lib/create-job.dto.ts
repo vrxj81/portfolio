@@ -11,7 +11,7 @@ import {
   IApplicantProfile,
   IJob,
   IRecruiterProfile,
-} from '@portfolio/domain-interfaces';
+} from '@portfolio/common-models';
 import { SalaryRangeDto } from './salary-range.dto';
 import { CreateRecruiterProfileDto } from './create-recruiter-profile.dto';
 import { CreateApplicantProfileDto } from './create-applicant-profile.dto';

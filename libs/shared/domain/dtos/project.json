@@ -1,9 +1,0 @@
-{
-  "name": "domain-dtos",
-  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/domain/dtos/src",
-  "projectType": "library",
-  "tags": ["scope:domain", "type:DTOs"],
-  "// targets": "to see all targets run: nx show project domain-dtos --web",
-  "targets": {}
-}

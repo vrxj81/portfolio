@@ -1,4 +1,4 @@
-import { IApplicantProfile, IUser } from '@portfolio/domain-interfaces';
+import { IApplicantProfile, IUser } from '@portfolio/common-models';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested, IsString, IsArray } from 'class-validator';
 import { UpdateUserDto } from './update-user.dto';

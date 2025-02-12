@@ -1,9 +1,0 @@
-{
-  "name": "domain-interfaces",
-  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/domain/interfaces/src",
-  "projectType": "library",
-  "tags": ["scope:domain", "type:interfaces"],
-  "// targets": "to see all targets run: nx show project domain-interfaces --web",
-  "targets": {}
-}

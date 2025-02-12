@@ -1,5 +1,5 @@
 {
-  "name": "@portfolio/domain-dtos",
+  "name": "@portfolio/common-dtos",
   "version": "0.0.1",
   "private": true,
   "type": "module",
