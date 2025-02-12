@@ -1,5 +1,5 @@
-import { IRecruiterProfile } from "./recruiter-profile.interface";
-import { IApplicantProfile } from "./applicant-profile.interface";
+import { IRecruiterProfile } from './recruiter-profile.interface';
+import { IApplicantProfile } from './applicant-profile.interface';
 
 export interface IJob {
   id: string;
@@ -11,7 +11,12 @@ export interface IJob {
     min: number;
     max: number;
   };
-  employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Temporary' | 'Internship';
+  employmentType:
+    | 'Full-time'
+    | 'Part-time'
+    | 'Contract'
+    | 'Temporary'
+    | 'Internship';
   postedDate: Date;
   applicationDeadline?: Date;
   requirements: string[];
