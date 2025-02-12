@@ -12,6 +12,9 @@ export class CreateRecruiterProfileDto
   user!: IUser;
 
   @IsString()
+  fullName!: string;
+
+  @IsString()
   company!: string;
 
   @IsString()

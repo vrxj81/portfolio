@@ -11,6 +11,9 @@ export class CreateApplicantProfileDto
   @Type(() => CreateUserDto)
   user!: IUser;
 
+  @IsString()
+  fullName!: string;
+
   @IsOptional()
   @IsString()
   resumeUrl?: string;

@@ -1,6 +1,12 @@
 import { IRole, IUser } from '@portfolio/domain-interfaces';
 import { Type } from 'class-transformer';
-import { IsEmail, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { CreateRoleDto } from './create-role.dto';
 
 export class CreateUserDto
@@ -15,6 +21,9 @@ export class CreateUserDto
   @IsOptional()
   @IsString()
   password?: string;
+
+  @IsBoolean()
+  isActive!: boolean;
 
   @IsOptional()
   @IsString()

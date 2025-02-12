@@ -1,6 +1,12 @@
 import { IRole, IUser } from '@portfolio/domain-interfaces';
 import { Type } from 'class-transformer';
-import { IsEmail, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { UpdateRoleDto } from './update-role.dto';
 
 export class UpdateUserDto
@@ -17,6 +23,10 @@ export class UpdateUserDto
   @IsOptional()
   @IsString()
   password?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 
   @IsOptional()
   @IsString()
