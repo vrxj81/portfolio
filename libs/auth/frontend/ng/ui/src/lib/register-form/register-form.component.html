@@ -1,0 +1,63 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="username">Username</label>
+    <input id="username" formControlName="username" type="text" />
+    @if (
+      registerForm.get('username')?.invalid &&
+      registerForm.get('username')?.touched
+    ) {
+      Username is required.
+    }
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" />
+    @if (
+      registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+    ) {
+      @if (registerForm.get('email')?.errors?.['required']) {
+        Email is required.
+      }
+      @if (registerForm.get('email')?.errors?.['email']) {
+        Invalid email format.
+      }
+    }
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input id="password" formControlName="password" type="password" />
+    @if (
+      registerForm.get('password')?.invalid &&
+      registerForm.get('password')?.touched
+    ) {
+      Password is required.
+    }
+  </div>
+
+  <div>
+    <label for="confirmPassword">Confirm Password</label>
+    <input
+      id="confirmPassword"
+      formControlName="confirmPassword"
+      type="password"
+    />
+    @if (
+      registerForm.get('confirmPassword')?.invalid &&
+      registerForm.get('confirmPassword')?.touched
+    ) {
+      Confirm Password is required.
+    }
+    @if (
+      registerForm.errors?.['passwordMismatch'] &&
+      registerForm.get('confirmPassword')?.touched
+    ) {
+      Passwords do not match.
+    }
+  </div>
+
+  <button type="submit" [disabled]="registerForm.invalid || isLoading()">
+    Register
+  </button>
+</form>
