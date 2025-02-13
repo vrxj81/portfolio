@@ -1,0 +1,9 @@
+@import 'mixins';
+
+.btn-primary {
+  @include button-style(var(--primary-color), var(--white-color));
+}
+
+.btn-secondary {
+  @include button-style(var(--secondary-color), var(--white-color));
+}
