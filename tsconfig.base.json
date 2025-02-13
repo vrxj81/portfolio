@@ -23,6 +23,7 @@
       ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
+      "@portfolio/styles-scss": ["libs/shared/styles/scss/src/index.ts"],
       "@portfolio/testing-data-mocks-util": [
         "libs/shared/testing/data-mocks/util/src/index.ts"
       ]

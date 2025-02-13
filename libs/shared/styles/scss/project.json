@@ -1,0 +1,9 @@
+{
+  "name": "styles-scss",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/styles/scss/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:styles"],
+  "// targets": "to see all targets run: nx show project styles-scss --web",
+  "targets": {}
+}

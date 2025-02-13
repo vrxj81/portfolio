@@ -1,0 +1,18 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin button-style($bg-color, $color) {
+  background-color: $bg-color;
+  color: $color;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: darken($bg-color, 10%);
+  }
+}
