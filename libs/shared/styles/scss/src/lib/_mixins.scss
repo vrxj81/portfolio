@@ -4,15 +4,15 @@
   align-items: center;
 }
 
-@mixin button-style($bg-color, $color) {
+@mixin button-style($bg-color, $text-color) {
   background-color: $bg-color;
-  color: $color;
+  color: $text-color;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
   &:hover {
-    background-color: darken($bg-color, 10%);
+    filter: brightness(90%);
   }
 }
