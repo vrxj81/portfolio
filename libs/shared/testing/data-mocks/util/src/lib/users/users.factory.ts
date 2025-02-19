@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 export const userFactory = (options?: Partial<IUser>): IUser => {
   const user: IUser = {
     id: faker.string.uuid(),
-    username: faker.internet.userName(),
+    username: faker.internet.username(),
     email: faker.internet.email(),
     password: faker.internet.password(),
     isActive: faker.datatype.boolean(),

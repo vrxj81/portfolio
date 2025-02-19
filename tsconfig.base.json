@@ -26,6 +26,9 @@
       ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
+      "@portfolio/data-access-backend-users": [
+        "libs/shared/data-access/backend/users/src/index.ts"
+      ],
       "@portfolio/styles-scss": ["libs/shared/styles/scss/src/index.scss"],
       "@portfolio/testing-data-mocks-util": [
         "libs/shared/testing/data-mocks/util/src/index.ts"
