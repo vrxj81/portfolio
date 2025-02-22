@@ -10,23 +10,21 @@ import { CreateUserDto, UpdateUserDto } from '@portfolio/common-dtos';
 import { InjectRepository } from '@mikro-orm/nestjs';
 
 @Injectable()
-export class UsersRepository extends EntityRepository<User> {
+export class UsersRepository {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: EntityRepository<User>,
-  ) {
-    super(usersRepository.getEntityManager(), User.name);
-  }
+  ) {}
 
-  getUsers(options: FindAllOptions<User> = {}): Promise<User[]> {
-    return this.usersRepository.findAll(options);
+  getUsers(where: FilterQuery<User> = {}, options: FindAllOptions<User> = {}): Promise<User[]> {
+    return this.usersRepository.find(where, options);
   }
 
   async getUser(
-    query: FilterQuery<User> = {},
+    where: FilterQuery<User> = {},
     options: FindOneOptions<User> = {},
   ): Promise<User> {
-    const user = await this.usersRepository.findOne(query, options);
+    const user = await this.usersRepository.findOne(where, options);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -50,7 +48,8 @@ export class UsersRepository extends EntityRepository<User> {
   }
 
   async deleteUser(id: string): Promise<string> {
-    await this.usersRepository.nativeDelete({ id });
+    const deletedUser = await this.getUser({ id });
+    await this.usersRepository.getEntityManager().removeAndFlush(deletedUser);
     return id;
   }
 }

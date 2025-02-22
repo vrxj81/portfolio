@@ -13,10 +13,11 @@ describe('UsersRepository', () => {
 
   const mockEntityManager = {
     persistAndFlush: jest.fn(),
+    removeAndFlush: jest.fn(),
   };
 
   const mockRepository = {
-    findAll: jest.fn().mockResolvedValue(expectedUsers),
+    find: jest.fn().mockResolvedValue(expectedUsers),
     findOne: jest.fn().mockResolvedValue(expectedUser),
     create: jest.fn().mockReturnValue(expectedUser),
     getEntityManager: jest.fn().mockReturnValue(mockEntityManager),
@@ -97,9 +98,9 @@ describe('UsersRepository', () => {
     it('should delete the user and return the id', async () => {
       const deletedId = await provider.deleteUser(expectedUser.id);
       expect(deletedId).toEqual(expectedUser.id);
-      expect(mockRepository.nativeDelete).toHaveBeenCalledWith({
-        id: expectedUser.id,
-      });
+      expect(mockEntityManager.removeAndFlush).toHaveBeenCalledWith(
+        expectedUser,
+      );
     });
   });
 });
