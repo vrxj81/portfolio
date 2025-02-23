@@ -26,6 +26,9 @@
       ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
+      "@portfolio/data-access-backend-permissions": [
+        "libs/shared/data-access/backend/permissions/src/index.ts"
+      ],
       "@portfolio/data-access-backend-roles": [
         "libs/shared/data-access/backend/roles/src/index.ts"
       ],
