@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@portfolio/auth-backend-util": ["libs/auth/backend/util/src/index.ts"],
+      "@portfolio/auth-backend-application": [
+        "libs/auth/backend/application/src/index.ts"
+      ],
       "@portfolio/auth-frontend-ng-data-access": [
         "libs/auth/frontend/ng/data-access/src/index.ts"
       ],
