@@ -1,5 +1,5 @@
 import { IUser } from '@portfolio/common-models';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { Match } from './custom/match-constraint';
 
 export class RegisterRequestDto
@@ -17,4 +17,8 @@ export class RegisterRequestDto
   @IsString()
   @Match('password', { message: 'Passwords do not match' })
   confirmPassword!: string;
+
+  @IsOptional()
+  @IsString()
+  role?: string;
 }
