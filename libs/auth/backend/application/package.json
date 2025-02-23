@@ -1,5 +1,5 @@
 {
-  "name": "@portfolio/auth-backend-util",
+  "name": "@portfolio/auth-backend-application",
   "version": "0.0.1",
   "private": true,
   "type": "commonjs",
