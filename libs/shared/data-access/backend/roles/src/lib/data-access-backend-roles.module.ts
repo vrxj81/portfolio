@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
+import { Role } from './role.entity';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { User } from './user.entity';
 
 @Module({
-  imports: [MikroOrmModule.forFeature({ entities: [User] })],
+  imports: [MikroOrmModule.forFeature({ entities: [Role] })],
   providers: [],
   exports: [MikroOrmModule],
 })
-export class DataAccessBackendUsersModule {}
+export class DataAccessBackendRolesModule {}
