@@ -1,5 +1,5 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { IUser } from '@portfolio/common-models';
+import { Entity, ManyToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { IUser, IRole } from '@portfolio/common-models';
 
 @Entity()
 export class User implements IUser {
@@ -24,8 +24,8 @@ export class User implements IUser {
   @Property({ nullable: true })
   refreshToken?: string;
 
-  //@ManyToMany(() => Role, role => role.users, { nullable: true })
-  //roles?: Collection<IRole>;
+  @ManyToMany('Role', 'users')
+  roles?: IRole[];
 
   @Property()
   createdAt: Date = new Date();
