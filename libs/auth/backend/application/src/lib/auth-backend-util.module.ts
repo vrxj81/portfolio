@@ -22,7 +22,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 
 @Module({})
-export class AuthBackendUtilModule extends ConfigurableModuleClass {
+export class AuthBackendApplicationModule extends ConfigurableModuleClass {
   constructor(@Inject(AUTH_MODULE_OPTIONS) private options: string | symbol) {
     super();
   }

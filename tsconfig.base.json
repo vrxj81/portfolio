@@ -18,6 +18,9 @@
       "@portfolio/auth-backend-application": [
         "libs/auth/backend/application/src/index.ts"
       ],
+      "@portfolio/auth-backend-interface": [
+        "libs/auth/backend/interface/src/index.ts"
+      ],
       "@portfolio/auth-frontend-ng-data-access": [
         "libs/auth/frontend/ng/data-access/src/index.ts"
       ],
