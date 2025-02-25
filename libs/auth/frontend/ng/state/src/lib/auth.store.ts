@@ -61,13 +61,23 @@ export const AuthStore = signalStore(
           switchMap((credentials) =>
             authService.register(credentials).pipe(
               tapResponse({
-                next: ({ accessToken, refreshToken }) => {
-                  const decoded: { user: IUser } = jwtDecode(accessToken);
-                  localStorage.setItem('refreshToken', refreshToken);
-                  patchState(store, { accessToken }, addEntity(decoded.user), {
-                    ability: updateAbilitiesForUser(decoded.user),
-                  });
-                  router.navigate(['/']);
+                next: (response) => {
+                  if ('registered' in response) {
+                    patchState(store, { isRegistered: response.registered });
+                  } else {
+                    const { accessToken, refreshToken } = response;
+                    const decoded: { user: IUser } = jwtDecode(accessToken);
+                    localStorage.setItem('refreshToken', refreshToken);
+                    patchState(
+                      store,
+                      { accessToken },
+                      addEntity(decoded.user),
+                      {
+                        ability: updateAbilitiesForUser(decoded.user),
+                      },
+                    );
+                    router.navigate(['/']);
+                  }
                 },
                 error: (error) => patchState(store, { error: error as string }),
                 finalize: () => patchState(store, { isLoading: false }),
@@ -98,7 +108,11 @@ export const AuthStore = signalStore(
       ),
       logout: () => {
         localStorage.removeItem('refreshToken');
-        patchState(store, { accessToken: null, ability: null }, removeAllEntities());
+        patchState(
+          store,
+          { accessToken: null, ability: null },
+          removeAllEntities(),
+        );
         router.navigate(['/login']);
       },
       canActivate: (action: string, subject: string) => {
