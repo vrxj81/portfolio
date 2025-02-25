@@ -18,6 +18,9 @@
       "@portfolio/auth-backend-application": [
         "libs/auth/backend/application/src/index.ts"
       ],
+      "@portfolio/auth-backend-config": [
+        "libs/auth/backend/config/src/index.ts"
+      ],
       "@portfolio/auth-backend-interface": [
         "libs/auth/backend/interface/src/index.ts"
       ],
@@ -29,9 +32,6 @@
       ],
       "@portfolio/auth-frontend-ng-ui": [
         "libs/auth/frontend/ng/ui/src/index.ts"
-      ],
-      "@portfolio/backend-auth-config": [
-        "libs/backend/auth/config/src/index.ts"
       ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],

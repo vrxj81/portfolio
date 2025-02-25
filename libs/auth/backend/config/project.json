@@ -1,0 +1,19 @@
+{
+  "name": "auth-backend-config",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/auth/backend/config/src",
+  "projectType": "library",
+  "tags": ["scope:backend", "type:config", "domain:auth"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/auth/backend/config",
+        "main": "libs/auth/backend/config/src/index.ts",
+        "tsConfig": "libs/auth/backend/config/tsconfig.lib.json",
+        "assets": ["libs/auth/backend/config/*.md"]
+      }
+    }
+  }
+}
