@@ -6,7 +6,7 @@ export const jwtConfig = registerAs('jwt', () => ({
   audience: process.env['JWT_AUDIENCE'],
   issuer: process.env['JWT_ISSUER'],
   accessTokenTtl: +(process.env['JWT_ACCESS_TOKEN_TTL'] || 3600),
-  refreshTokenTtl: +(process.env['JWT_REFRESH_TOKEN_TTL'] || 3600),
+  refreshTokenTtl: +(process.env['JWT_REFRESH_TOKEN_TTL'] || 86400),
 }));
 
 export type JwtConfig = ConfigType<typeof jwtConfig>;
