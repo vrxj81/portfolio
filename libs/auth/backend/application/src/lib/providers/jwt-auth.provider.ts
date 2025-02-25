@@ -69,8 +69,7 @@ export class JwtAuthProvider implements AuthService {
       return { registered: true };
     }
     const payload = { sub: user.id, user };
-    const { accessToken, refreshToken } = this.generateTokens(payload);
-    return { token: accessToken };
+    return this.generateTokens(payload);
   }
 
   async login(loginRequest: LoginRequestDto): Promise<AuthResponseDto> {
@@ -92,7 +91,7 @@ export class JwtAuthProvider implements AuthService {
     this.userRepository.assign(user, { accessToken });
     this.userRepository.getEntityManager().persistAndFlush(user);
     this.eventEmitter.emit('user.logged-in', user);
-    return { token: accessToken };
+    return { accessToken, refreshToken };
   }
 
   async activate(
@@ -148,7 +147,8 @@ export class JwtAuthProvider implements AuthService {
     refreshToken: string;
   } {
     const accessToken = this.jwtService.sign(payload);
-    const refreshToken = this.jwtService.sign(payload, {
+    const refreshPayload = { sub: payload.sub };
+    const refreshToken = this.jwtService.sign(refreshPayload, {
       expiresIn: this.jwtConfig.refreshTokenTtl,
     });
     return { accessToken, refreshToken };
