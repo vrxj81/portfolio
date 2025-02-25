@@ -27,7 +27,7 @@ import {
 } from '@casl/ability';
 
 type AuthState = {
-  token: string | null;
+  accessToken: string | null;
   isLoading: boolean;
   isRegistered: boolean;
   selectedId: string | null;
@@ -36,7 +36,7 @@ type AuthState = {
 };
 
 const initialState: AuthState = {
-  token: null,
+  accessToken: null,
   isLoading: false,
   isRegistered: false,
   selectedId: null,
@@ -50,7 +50,7 @@ export const AuthStore = signalStore(
   withState(initialState),
   withEntities<IUser>(),
   withComputed((state) => ({
-    isAuthenticated: computed(() => !!state.token),
+    isAuthenticated: computed(() => !!state.accessToken),
     user: computed(() => state.entities()[0]),
   })),
   withMethods(
@@ -61,10 +61,10 @@ export const AuthStore = signalStore(
           switchMap((credentials) =>
             authService.register(credentials).pipe(
               tapResponse({
-                next: ({ token }) => {
-                  const decoded: { user: IUser } = jwtDecode(token);
-                  localStorage.setItem('token', token);
-                  patchState(store, { token }, addEntity(decoded.user), {
+                next: ({ accessToken, refreshToken }) => {
+                  const decoded: { user: IUser } = jwtDecode(accessToken);
+                  localStorage.setItem('refreshToken', refreshToken);
+                  patchState(store, { accessToken }, addEntity(decoded.user), {
                     ability: updateAbilitiesForUser(decoded.user),
                   });
                   router.navigate(['/']);
@@ -82,9 +82,9 @@ export const AuthStore = signalStore(
           switchMap((credentials) =>
             authService.login(credentials).pipe(
               tapResponse({
-                next: ({ token }) => {
-                  const decoded: { user: IUser } = jwtDecode(token);
-                  localStorage.setItem('token', token);
+                next: ({ accessToken, refreshToken }) => {
+                  const decoded: { user: IUser } = jwtDecode(accessToken);
+                  localStorage.setItem('refreshToken', refreshToken);
                   patchState(store, addEntity(decoded.user), {
                     ability: updateAbilitiesForUser(decoded.user),
                   });
@@ -97,8 +97,8 @@ export const AuthStore = signalStore(
         ),
       ),
       logout: () => {
-        localStorage.removeItem('token');
-        patchState(store, { token: null, ability: null }, removeAllEntities());
+        localStorage.removeItem('refreshToken');
+        patchState(store, { accessToken: null, ability: null }, removeAllEntities());
         router.navigate(['/login']);
       },
       canActivate: (action: string, subject: string) => {
