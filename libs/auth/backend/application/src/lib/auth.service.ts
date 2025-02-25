@@ -4,11 +4,12 @@ import {
   LoginRequestDto,
   RegisterRequestDto,
 } from '@portfolio/common-dtos';
-import { IUser } from '@portfolio/common-models';
 
 @Injectable()
 export abstract class AuthService {
-  abstract register(registerRequest: RegisterRequestDto): Promise<IUser>;
+  abstract register(
+    registerRequest: RegisterRequestDto,
+  ): Promise<AuthResponseDto | { registered: boolean }>;
   abstract login(loginRequest: LoginRequestDto): Promise<AuthResponseDto>;
   abstract activate(
     userId: string,

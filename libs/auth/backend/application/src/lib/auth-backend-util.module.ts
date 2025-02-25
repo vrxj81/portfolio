@@ -20,6 +20,7 @@ import {
 } from './auth-backend-util.module.definition';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
+import { InjectJwtConfig, JwtConfig } from '@portfolio/auth-backend-config';
 
 @Module({})
 export class AuthBackendApplicationModule extends ConfigurableModuleClass {
@@ -56,11 +57,14 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
       case options.authStrategies.includes('jwt'):
         imports = [
           ...imports,
-          JwtModule.register({
-            secret: process.env['JWT_SECRET'],
-            signOptions: {
-              expiresIn: +(process.env['JWT_EXPIRES_IN'] || 3600),
-            },
+          JwtModule.registerAsync({
+            inject: [InjectJwtConfig],
+            useFactory: (jwtConfig: JwtConfig) => ({
+              secret: jwtConfig.secret,
+              signOptions: {
+                expiresIn: jwtConfig.accessTokenTtl,
+              },
+            }),
           }),
         ];
         providers = [...providers, JwtAuthProvider, JwtStrategy];
