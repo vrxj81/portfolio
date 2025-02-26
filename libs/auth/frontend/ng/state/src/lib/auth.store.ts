@@ -30,6 +30,9 @@ type AuthState = {
   accessToken: string | null;
   isLoading: boolean;
   isRegistered: boolean;
+  isActivated: boolean;
+  isForgot: boolean;
+  isReset: boolean;
   selectedId: string | null;
   error: string | null;
   ability: MongoAbility | null;
@@ -39,6 +42,9 @@ const initialState: AuthState = {
   accessToken: null,
   isLoading: false,
   isRegistered: false,
+  isActivated: false,
+  isForgot: false,
+  isReset: false,
   selectedId: null,
   error: null,
   ability: null,
@@ -113,8 +119,51 @@ export const AuthStore = signalStore(
           { accessToken: null, ability: null },
           removeAllEntities(),
         );
-        router.navigate(['/login']);
+        router.navigate(['/auth/login']);
       },
+      activate: rxMethod<{ userId: string; token: string }>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap(({ userId, token }) =>
+            authService.activate(userId, token).pipe(
+              tapResponse({
+                next: ({ activated }) =>
+                  patchState(store, { isActivated: activated }),
+                error: (error) => patchState(store, { error: error as string }),
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            ),
+          ),
+        ),
+      ),
+      forgotPassword: rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap((email) =>
+            authService.forgotPassword(email).pipe(
+              tapResponse({
+                next: ({ forgot }) => patchState(store, { isForgot: forgot }),
+                error: (error) => patchState(store, { error: error as string }),
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            ),
+          ),
+        ),
+      ),
+      resetPassword: rxMethod<{ token: string; password: string }>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap(({ token, password }) =>
+            authService.resetPassword(token, password).pipe(
+              tapResponse({
+                next: ({ reset }) => patchState(store, { isReset: reset }),
+                error: (error) => patchState(store, { error: error as string }),
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            ),
+          ),
+        ),
+      ),
       canActivate: (action: string, subject: string) => {
         return store.ability()?.can(action, subject);
       },
