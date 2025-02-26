@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtAuthProvider } from './jwt-auth.provider';
 import { JwtService } from '@nestjs/jwt';
-import { getRepositoryToken } from '@mikro-orm/nestjs';
 import { User } from '@portfolio/data-access-backend-users';
 import { Role } from '@portfolio/data-access-backend-roles';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -10,6 +9,7 @@ import { RegisterRequestDto } from '@portfolio/common-dtos';
 import * as bcrypt from 'bcrypt';
 import { IUser } from '@portfolio/common-models';
 import { authConfig, jwtConfig } from '@portfolio/auth-backend-config';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('JwtAuthProvider', () => {
   let provider: JwtAuthProvider;
@@ -37,10 +37,8 @@ describe('JwtAuthProvider', () => {
   const mockUserRepository = {
     findOneOrFail: jest.fn().mockResolvedValue(user),
     create: jest.fn().mockReturnValue(user),
-    getEntityManager: jest.fn().mockReturnValue({
-      persistAndFlush: jest.fn(),
-    }),
-    assign: jest.fn((data: Partial<IUser>) => {
+    save: jest.fn().mockReturnValue(user),
+    update: jest.fn((data: Partial<IUser>) => {
       return { ...user, ...data };
     }),
   };

@@ -1,27 +1,28 @@
-import { Entity, ManyToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { IPermission, IRole, IUser } from '@portfolio/common-models';
 
-@Entity({ tableName: 'roles' })
+@Entity({ name: 'roles' })
 export class Role implements IRole {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Property({ unique: true })
+  @Column({ unique: true })
   name!: string;
 
-  @Property({ nullable: true })
+  @Column({ nullable: true })
   description?: string;
 
   @ManyToMany('User', 'roles')
   users?: IUser[];
 
   @ManyToMany('Permission', 'roles')
+  @JoinTable()
   permissions?: IPermission[];
 
-  @Property({ onCreate: () => new Date() })
+  @CreateDateColumn()
   createdAt = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @UpdateDateColumn()
   updatedAt = new Date();
 
   constructor(data: Partial<Role> = {}) {

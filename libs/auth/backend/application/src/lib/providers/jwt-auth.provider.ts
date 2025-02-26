@@ -8,9 +8,7 @@ import {
 } from '@portfolio/common-dtos';
 import { IUser } from '@portfolio/common-models';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@mikro-orm/nestjs';
 import { User } from '@portfolio/data-access-backend-users';
-import { EntityRepository } from '@mikro-orm/core';
 import { compare, genSalt, hash } from 'bcrypt';
 import { Role } from '@portfolio/data-access-backend-roles';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -20,15 +18,17 @@ import {
   InjectJwtConfig,
   JwtConfig,
 } from '@portfolio/auth-backend-config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class JwtAuthProvider implements AuthService {
   constructor(
     private readonly jwtService: JwtService,
     @InjectRepository(User)
-    private readonly userRepository: EntityRepository<User>,
+    private readonly userRepository: Repository<User>,
     @InjectRepository(Role)
-    private readonly roleRepository: EntityRepository<Role>,
+    private readonly roleRepository: Repository<Role>,
     private readonly eventEmitter: EventEmitter2,
     @InjectAuthConfig() private readonly authConfig: AuthConfig,
     @InjectJwtConfig() private readonly jwtConfig: JwtConfig,
@@ -45,19 +45,16 @@ export class JwtAuthProvider implements AuthService {
       await genSalt(),
     );
     const role = await this.roleRepository.findOneOrFail({
-      name: registerRequest.role || this.authConfig.defaultRole,
+      where: { name: registerRequest.role || this.authConfig.defaultRole },
     });
-    const newUser = this.userRepository.create(
-      {
-        ...registerRequest,
-        password: hashedPassword,
-        isActive: !this.authConfig.activationRequired,
-        roles: [role],
-      },
-      { partial: true },
-    );
+    const newUser = this.userRepository.create({
+      ...registerRequest,
+      password: hashedPassword,
+      isActive: !this.authConfig.activationRequired,
+      roles: [role],
+    });
 
-    await this.userRepository.getEntityManager().persistAndFlush(newUser);
+    await this.userRepository.save(newUser);
 
     const { password, ...user } = newUser;
     this.eventEmitter.emit(
@@ -73,12 +70,12 @@ export class JwtAuthProvider implements AuthService {
   }
 
   async login(loginRequest: LoginRequestDto): Promise<AuthResponseDto> {
-    const loginUser: IUser = await this.userRepository.findOneOrFail(
-      {
+    const loginUser: IUser = await this.userRepository.findOneOrFail({
+      where: {
         email: loginRequest.email,
       },
-      { populate: ['roles', 'roles.permissions'] },
-    );
+      relations: ['roles', 'roles.permissions'],
+    });
     if (
       !loginUser ||
       !(await compare(loginRequest.password, loginUser.password || ''))
@@ -87,11 +84,8 @@ export class JwtAuthProvider implements AuthService {
     }
     const { password, ...user } = loginUser;
     const payload = { sub: user.id, user };
-    const { accessToken, refreshToken } = this.generateTokens(payload);
-    this.userRepository.assign(user, { accessToken });
-    this.userRepository.getEntityManager().persistAndFlush(user);
     this.eventEmitter.emit('user.logged-in', user);
-    return { accessToken, refreshToken };
+    return this.generateTokens(payload);
   }
 
   async activate(
@@ -99,27 +93,33 @@ export class JwtAuthProvider implements AuthService {
     token: string,
   ): Promise<{ activated: boolean }> {
     const user: IUser = await this.userRepository.findOneOrFail({
-      id: userId,
-      accessToken: token,
+      where: {
+        id: userId,
+        accessToken: token,
+      },
     });
     if (!user) {
       throw new BadRequestException('Invalid activation token');
     }
-    this.userRepository.assign(user, { isActive: true });
-    await this.userRepository.getEntityManager().persistAndFlush(user);
+    await this.userRepository.update(user, { isActive: true });
+    await this.userRepository.save(user);
     this.eventEmitter.emit('user.activated', user);
     return { activated: true };
   }
 
   async forgotPassword(credential: string): Promise<{ forgot: boolean }> {
     const user = await this.userRepository.findOneOrFail({
-      email: credential,
+      where: {
+        email: credential,
+      },
     });
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    this.userRepository.assign(user, { accessToken: crypto.randomUUID() });
-    await this.userRepository.getEntityManager().persistAndFlush(user);
+    await this.userRepository.update(user, {
+      accessToken: crypto.randomUUID(),
+    });
+    await this.userRepository.save(user);
     this.eventEmitter.emit('user.forgot-password', user);
     return { forgot: true };
   }
@@ -129,15 +129,17 @@ export class JwtAuthProvider implements AuthService {
     newPassword: string,
   ): Promise<{ reset: boolean }> {
     const user = await this.userRepository.findOneOrFail({
-      accessToken: token,
+      where: {
+        accessToken: token,
+      },
     });
     if (!user) {
       throw new Error('Invalid reset token');
     }
-    this.userRepository.assign(user, {
+    await this.userRepository.update(user, {
       password: await hash(newPassword, await genSalt()),
     });
-    await this.userRepository.getEntityManager().persistAndFlush(user);
+    await this.userRepository.save(user);
     this.eventEmitter.emit('user.reset-password', user);
     return { reset: true };
   }

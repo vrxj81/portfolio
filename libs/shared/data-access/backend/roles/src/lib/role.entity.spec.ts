@@ -13,8 +13,8 @@ describe('RoleEntity', () => {
     expect(role.description).toBeUndefined();
     expect(role.users).toBeUndefined();
     expect(role.permissions).toBeUndefined();
-    expect(role.createdAt).toBeUndefined();
-    expect(role.updatedAt).toBeUndefined();
+    expect(role.createdAt).toBeInstanceOf(Date);
+    expect(role.updatedAt).toBeInstanceOf(Date);
   });
 
   it('should create a role with provided values', () => {
