@@ -1,36 +1,37 @@
-import { Entity, ManyToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { IUser, IRole } from '@portfolio/common-models';
 
 @Entity()
 export class User implements IUser {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Property({ unique: true })
+  @Column({ unique: true })
   username!: string;
 
-  @Property({ unique: true })
+  @Column({ unique: true })
   email!: string;
 
-  @Property({ default: false })
+  @Column({ default: false })
   isActive!: boolean;
 
-  @Property({ nullable: true })
+  @Column({ nullable: true })
   password?: string;
 
-  @Property({ nullable: true })
+  @Column({ nullable: true })
   accessToken?: string;
 
-  @Property({ nullable: true })
+  @Column({ nullable: true })
   refreshToken?: string;
 
   @ManyToMany('Role', 'users')
+  @JoinTable()
   roles?: IRole[];
 
-  @Property()
+  @CreateDateColumn()
   createdAt: Date = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @UpdateDateColumn()
   updatedAt: Date = new Date();
 
   constructor(data: Partial<User> = {}) {

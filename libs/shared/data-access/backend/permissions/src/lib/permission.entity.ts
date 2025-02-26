@@ -1,30 +1,30 @@
-import { Entity, ManyToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { IPermission, IRole } from '@portfolio/common-models';
 
-@Entity({ tableName: 'permissions' })
+@Entity({ name: 'permissions' })
 export class Permission implements IPermission {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Property({ unique: true })
+  @Column({ unique: true })
   name!: string;
 
-  @Property()
+  @Column()
   action!: string;
 
-  @Property()
+  @Column()
   subject!: string;
 
-  @Property({ nullable: true, type: 'jsonb' })
+  @Column({ nullable: true, type: 'jsonb' })
   conditions?: string;
 
   @ManyToMany('Role', 'permissions')
-  roles?: IRole[] | undefined;
+  roles?: IRole[];
 
-  @Property({ onCreate: () => new Date() })
+  @CreateDateColumn()
   createdAt = new Date();
 
-  @Property({ onUpdate: () => new Date() })
+  @UpdateDateColumn()
   updatedAt = new Date();
 
   constructor(data: Partial<Permission> = {}) {

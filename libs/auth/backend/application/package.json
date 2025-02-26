@@ -7,17 +7,18 @@
   "types": "./src/index.d.ts",
   "dependencies": {
     "tslib": "^2.3.0",
-    "@nestjs/common": "^10.0.2",
+    "@nestjs/common": "11.0.10",
     "@nestjs/passport": "^11.0.5",
     "@portfolio/data-access-backend-users": "0.0.1",
     "@portfolio/data-access-backend-roles": "0.0.1",
     "@nestjs/jwt": "^11.0.0",
     "@portfolio/common-dtos": "0.0.1",
     "@portfolio/common-models": "0.0.1",
-    "@mikro-orm/nestjs": "^6.1.1",
-    "@mikro-orm/core": "^6.4.6",
     "bcrypt": "^5.1.1",
     "@nestjs/event-emitter": "^3.0.0",
-    "passport-jwt": "^4.0.1"
+    "passport-jwt": "^4.0.1",
+    "@portfolio/auth-backend-config": "0.0.1",
+    "@nestjs/typeorm": "11.0.0",
+    "typeorm": "^0.3.20"
   }
 }

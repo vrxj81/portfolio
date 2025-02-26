@@ -7,9 +7,8 @@
   "types": "./src/index.d.ts",
   "dependencies": {
     "tslib": "^2.3.0",
-    "@nestjs/common": "^10.0.2",
+    "@nestjs/common": "11.0.10",
     "@portfolio/auth-backend-application": "0.0.1",
-    "@portfolio/common-dtos": "0.0.1",
-    "@portfolio/common-models": "0.0.1"
+    "@portfolio/common-dtos": "0.0.1"
   }
 }

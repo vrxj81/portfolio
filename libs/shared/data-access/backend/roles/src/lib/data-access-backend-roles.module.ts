@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { Role } from './role.entity';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [MikroOrmModule.forFeature({ entities: [Role] })],
+  imports: [TypeOrmModule.forFeature([Role])],
   providers: [],
-  exports: [MikroOrmModule],
+  exports: [TypeOrmModule],
 })
 export class DataAccessBackendRolesModule {}
