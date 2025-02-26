@@ -2,15 +2,27 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { JwtStrategy } from './jwt.strategy';
 import { IUser } from '@portfolio/common-models';
 import { userFactory } from '@portfolio/testing-data-mocks-util';
+import { jwtConfig } from '@portfolio/auth-backend-config';
 
 describe('JwtStrategy', () => {
   let provider: JwtStrategy;
 
   const mockUser: IUser = userFactory();
 
+  const mockJwtConfig = {
+    secret: 'secret',
+    audience: 'audience',
+    issuer: 'issuer',
+    accessTokenTtl: 3600,
+    refreshTokenTtl: 86400,
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [JwtStrategy],
+      providers: [
+        JwtStrategy,
+        { provide: jwtConfig.KEY, useValue: mockJwtConfig },
+      ],
     }).compile();
 
     provider = module.get<JwtStrategy>(JwtStrategy);
