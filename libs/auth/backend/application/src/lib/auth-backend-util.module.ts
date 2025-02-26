@@ -20,7 +20,7 @@ import {
 } from './auth-backend-util.module.definition';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { InjectJwtConfig, JwtConfig } from '@portfolio/auth-backend-config';
+import { jwtConfig, JwtConfig } from '@portfolio/auth-backend-config';
 
 @Module({})
 export class AuthBackendApplicationModule extends ConfigurableModuleClass {
@@ -58,7 +58,7 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
         imports = [
           ...imports,
           JwtModule.registerAsync({
-            inject: [InjectJwtConfig],
+            inject: [jwtConfig.KEY],
             useFactory: (jwtConfig: JwtConfig) => ({
               secret: jwtConfig.secret,
               signOptions: {
@@ -67,7 +67,12 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
             }),
           }),
         ];
-        providers = [...providers, JwtAuthProvider, JwtStrategy];
+        providers = [
+          ...providers,
+          { provide: AuthService, useClass: JwtAuthProvider },
+          JwtAuthProvider,
+          JwtStrategy,
+        ];
         exports = [
           ...exports,
           { provide: AuthService, useClass: JwtAuthProvider },
