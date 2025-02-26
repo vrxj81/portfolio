@@ -27,18 +27,24 @@ import {
 } from '@casl/ability';
 
 type AuthState = {
-  token: string | null;
+  accessToken: string | null;
   isLoading: boolean;
   isRegistered: boolean;
+  isActivated: boolean;
+  isForgot: boolean;
+  isReset: boolean;
   selectedId: string | null;
   error: string | null;
   ability: MongoAbility | null;
 };
 
 const initialState: AuthState = {
-  token: null,
+  accessToken: null,
   isLoading: false,
   isRegistered: false,
+  isActivated: false,
+  isForgot: false,
+  isReset: false,
   selectedId: null,
   error: null,
   ability: null,
@@ -50,7 +56,7 @@ export const AuthStore = signalStore(
   withState(initialState),
   withEntities<IUser>(),
   withComputed((state) => ({
-    isAuthenticated: computed(() => !!state.token),
+    isAuthenticated: computed(() => !!state.accessToken),
     user: computed(() => state.entities()[0]),
   })),
   withMethods(
@@ -61,13 +67,23 @@ export const AuthStore = signalStore(
           switchMap((credentials) =>
             authService.register(credentials).pipe(
               tapResponse({
-                next: ({ token }) => {
-                  const decoded: { user: IUser } = jwtDecode(token);
-                  localStorage.setItem('token', token);
-                  patchState(store, { token }, addEntity(decoded.user), {
-                    ability: updateAbilitiesForUser(decoded.user),
-                  });
-                  router.navigate(['/']);
+                next: (response) => {
+                  if ('registered' in response) {
+                    patchState(store, { isRegistered: response.registered });
+                  } else {
+                    const { accessToken, refreshToken } = response;
+                    const decoded: { user: IUser } = jwtDecode(accessToken);
+                    localStorage.setItem('refreshToken', refreshToken);
+                    patchState(
+                      store,
+                      { accessToken },
+                      addEntity(decoded.user),
+                      {
+                        ability: updateAbilitiesForUser(decoded.user),
+                      },
+                    );
+                    router.navigate(['/']);
+                  }
                 },
                 error: (error) => patchState(store, { error: error as string }),
                 finalize: () => patchState(store, { isLoading: false }),
@@ -82,9 +98,9 @@ export const AuthStore = signalStore(
           switchMap((credentials) =>
             authService.login(credentials).pipe(
               tapResponse({
-                next: ({ token }) => {
-                  const decoded: { user: IUser } = jwtDecode(token);
-                  localStorage.setItem('token', token);
+                next: ({ accessToken, refreshToken }) => {
+                  const decoded: { user: IUser } = jwtDecode(accessToken);
+                  localStorage.setItem('refreshToken', refreshToken);
                   patchState(store, addEntity(decoded.user), {
                     ability: updateAbilitiesForUser(decoded.user),
                   });
@@ -97,10 +113,57 @@ export const AuthStore = signalStore(
         ),
       ),
       logout: () => {
-        localStorage.removeItem('token');
-        patchState(store, { token: null, ability: null }, removeAllEntities());
-        router.navigate(['/login']);
+        localStorage.removeItem('refreshToken');
+        patchState(
+          store,
+          { accessToken: null, ability: null },
+          removeAllEntities(),
+        );
+        router.navigate(['/auth/login']);
       },
+      activate: rxMethod<{ userId: string; token: string }>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap(({ userId, token }) =>
+            authService.activate(userId, token).pipe(
+              tapResponse({
+                next: ({ activated }) =>
+                  patchState(store, { isActivated: activated }),
+                error: (error) => patchState(store, { error: error as string }),
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            ),
+          ),
+        ),
+      ),
+      forgotPassword: rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap((email) =>
+            authService.forgotPassword(email).pipe(
+              tapResponse({
+                next: ({ forgot }) => patchState(store, { isForgot: forgot }),
+                error: (error) => patchState(store, { error: error as string }),
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            ),
+          ),
+        ),
+      ),
+      resetPassword: rxMethod<{ token: string; password: string }>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap(({ token, password }) =>
+            authService.resetPassword(token, password).pipe(
+              tapResponse({
+                next: ({ reset }) => patchState(store, { isReset: reset }),
+                error: (error) => patchState(store, { error: error as string }),
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            ),
+          ),
+        ),
+      ),
       canActivate: (action: string, subject: string) => {
         return store.ability()?.can(action, subject);
       },

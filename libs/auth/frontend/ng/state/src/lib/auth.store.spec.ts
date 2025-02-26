@@ -7,6 +7,9 @@ describe('AuthStore', () => {
   const mockAuthService = {
     login: jest.fn(),
     register: jest.fn(),
+    activate: jest.fn(),
+    forgotPassword: jest.fn(),
+    resetPassword: jest.fn(),
   };
 
   beforeEach(() => {

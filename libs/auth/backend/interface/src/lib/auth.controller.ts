@@ -5,14 +5,15 @@ import {
   LoginRequestDto,
   RegisterRequestDto,
 } from '@portfolio/common-dtos';
-import { IUser } from '@portfolio/common-models';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() registerRequest: RegisterRequestDto): Promise<IUser> {
+  async register(
+    @Body() registerRequest: RegisterRequestDto,
+  ): Promise<AuthResponseDto | { registered: boolean }> {
     return this.authService.register(registerRequest);
   }
 

@@ -9,6 +9,7 @@ import { userFactory } from '@portfolio/testing-data-mocks-util';
 import { RegisterRequestDto } from '@portfolio/common-dtos';
 import * as bcrypt from 'bcrypt';
 import { IUser } from '@portfolio/common-models';
+import { authConfig, jwtConfig } from '@portfolio/auth-backend-config';
 
 describe('JwtAuthProvider', () => {
   let provider: JwtAuthProvider;
@@ -56,6 +57,11 @@ describe('JwtAuthProvider', () => {
     emit: jest.fn().mockReturnValue(true),
   };
 
+  const mockAuthConfig = {
+    activationRequired: false,
+    defaultRole: 'user',
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -76,6 +82,14 @@ describe('JwtAuthProvider', () => {
           provide: EventEmitter2,
           useValue: mockEventEmitter,
         },
+        {
+          provide: authConfig.KEY,
+          useValue: mockAuthConfig,
+        },
+        {
+          provide: jwtConfig.KEY,
+          useValue: jwtConfig,
+        },
       ],
     }).compile();
 
@@ -91,11 +105,27 @@ describe('JwtAuthProvider', () => {
       const result = await provider.register(registerRequest);
 
       expect(result).toEqual(
-        expect.objectContaining({ email: 'test@example.com' }),
+        expect.objectContaining({
+          accessToken: user.accessToken,
+          refreshToken: user.accessToken,
+        }),
       );
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.registered',
         expect.any(Object),
+        false,
+      );
+    });
+
+    it('should return a boolean if activation is required', async () => {
+      mockAuthConfig.activationRequired = true;
+      const result = await provider.register(registerRequest);
+
+      expect(result).toEqual({ registered: true });
+      expect(mockEventEmitter.emit).toHaveBeenCalledWith(
+        'user.registered',
+        expect.any(Object),
+        true,
       );
     });
 
@@ -111,7 +141,10 @@ describe('JwtAuthProvider', () => {
     it('should login a user', async () => {
       const result = await provider.login(loginRequest);
 
-      expect(result).toEqual({ token: user.accessToken });
+      expect(result).toEqual({
+        accessToken: user.accessToken,
+        refreshToken: user.accessToken,
+      });
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.logged-in',
         expect.any(Object),

@@ -14,6 +14,12 @@ import { EntityRepository } from '@mikro-orm/core';
 import { compare, genSalt, hash } from 'bcrypt';
 import { Role } from '@portfolio/data-access-backend-roles';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import {
+  AuthConfig,
+  InjectAuthConfig,
+  InjectJwtConfig,
+  JwtConfig,
+} from '@portfolio/auth-backend-config';
 
 @Injectable()
 export class JwtAuthProvider implements AuthService {
@@ -24,9 +30,13 @@ export class JwtAuthProvider implements AuthService {
     @InjectRepository(Role)
     private readonly roleRepository: EntityRepository<Role>,
     private readonly eventEmitter: EventEmitter2,
+    @InjectAuthConfig() private readonly authConfig: AuthConfig,
+    @InjectJwtConfig() private readonly jwtConfig: JwtConfig,
   ) {}
 
-  async register(registerRequest: RegisterRequestDto): Promise<IUser> {
+  async register(
+    registerRequest: RegisterRequestDto,
+  ): Promise<AuthResponseDto | { registered: boolean }> {
     if (registerRequest.password !== registerRequest.confirmPassword) {
       throw new BadRequestException('Passwords do not match');
     }
@@ -35,12 +45,13 @@ export class JwtAuthProvider implements AuthService {
       await genSalt(),
     );
     const role = await this.roleRepository.findOneOrFail({
-      name: registerRequest.role || process.env['DEFAULT_ROLE'],
+      name: registerRequest.role || this.authConfig.defaultRole,
     });
     const newUser = this.userRepository.create(
       {
         ...registerRequest,
         password: hashedPassword,
+        isActive: !this.authConfig.activationRequired,
         roles: [role],
       },
       { partial: true },
@@ -49,8 +60,16 @@ export class JwtAuthProvider implements AuthService {
     await this.userRepository.getEntityManager().persistAndFlush(newUser);
 
     const { password, ...user } = newUser;
-    this.eventEmitter.emit('user.registered', user);
-    return user;
+    this.eventEmitter.emit(
+      'user.registered',
+      user,
+      this.authConfig.activationRequired,
+    );
+    if (this.authConfig.activationRequired) {
+      return { registered: true };
+    }
+    const payload = { sub: user.id, user };
+    return this.generateTokens(payload);
   }
 
   async login(loginRequest: LoginRequestDto): Promise<AuthResponseDto> {
@@ -68,11 +87,11 @@ export class JwtAuthProvider implements AuthService {
     }
     const { password, ...user } = loginUser;
     const payload = { sub: user.id, user };
-    const token = this.jwtService.sign(payload);
-    this.userRepository.assign(user, { accessToken: token });
+    const { accessToken, refreshToken } = this.generateTokens(payload);
+    this.userRepository.assign(user, { accessToken });
     this.userRepository.getEntityManager().persistAndFlush(user);
     this.eventEmitter.emit('user.logged-in', user);
-    return { token };
+    return { accessToken, refreshToken };
   }
 
   async activate(
@@ -121,5 +140,17 @@ export class JwtAuthProvider implements AuthService {
     await this.userRepository.getEntityManager().persistAndFlush(user);
     this.eventEmitter.emit('user.reset-password', user);
     return { reset: true };
+  }
+
+  private generateTokens(payload: { sub: string; user: IUser }): {
+    accessToken: string;
+    refreshToken: string;
+  } {
+    const accessToken = this.jwtService.sign(payload);
+    const refreshPayload = { sub: payload.sub };
+    const refreshToken = this.jwtService.sign(refreshPayload, {
+      expiresIn: this.jwtConfig.refreshTokenTtl,
+    });
+    return { accessToken, refreshToken };
   }
 }

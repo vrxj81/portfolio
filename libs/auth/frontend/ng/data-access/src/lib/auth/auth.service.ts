@@ -18,6 +18,30 @@ export class AuthService {
   }
 
   register(data: RegisterRequestDto) {
-    return this.http.post<AuthResponseDto>(`${this.apiUrl}/register`, data);
+    return this.http.post<AuthResponseDto | { registered: boolean }>(
+      `${this.apiUrl}/register`,
+      data,
+    );
+  }
+
+  activate(userId: string, token: string) {
+    return this.http.patch<{ activated: boolean }>(
+      `${this.apiUrl}/activate/${userId}`,
+      { token },
+    );
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post<{ forgot: boolean }>(
+      `${this.apiUrl}/forgot-password`,
+      email,
+    );
+  }
+
+  resetPassword(token: string, password: string) {
+    return this.http.patch<{ reset: boolean }>(
+      `${this.apiUrl}/reset-password/${token}`,
+      { password },
+    );
   }
 }
