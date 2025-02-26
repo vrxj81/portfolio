@@ -36,6 +36,7 @@
       "@portfolio/auth-frontend-ng-util": [
         "libs/auth/frontend/ng/util/src/index.ts"
       ],
+      "@portfolio/backend-config": ["libs/shared/backend/config/src/index.ts"],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
       "@portfolio/data-access-backend-permissions": [
