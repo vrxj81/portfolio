@@ -4831,6 +4831,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/playwright@npm:20.4.2":
+  version: 20.4.2
+  resolution: "@nx/playwright@npm:20.4.2"
+  dependencies:
+    "@nx/devkit": "npm:20.4.2"
+    "@nx/eslint": "npm:20.4.2"
+    "@nx/js": "npm:20.4.2"
+    "@nx/vite": "npm:20.4.2"
+    "@nx/webpack": "npm:20.4.2"
+    "@phenomnomnominal/tsquery": "npm:~5.0.1"
+    minimatch: "npm:9.0.3"
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@playwright/test": ^1.36.0
+  peerDependenciesMeta:
+    "@playwright/test":
+      optional: true
+  checksum: 10c0/f937d606db385e4855887b71d30ed4e922e3ab8bf6065ee7d4c68b98bdfefe7e5cd6d9a80eec4bd6a750572e969a64249fc96eeecfd9fd6c3f1830d8e225be71
+  languageName: node
+  linkType: hard
+
 "@nx/vite@npm:20.4.2":
   version: 20.4.2
   resolution: "@nx/vite@npm:20.4.2"
@@ -5084,6 +5105,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@playwright/test@npm:^1.36.0":
+  version: 1.50.1
+  resolution: "@playwright/test@npm:1.50.1"
+  dependencies:
+    playwright: "npm:1.50.1"
+  bin:
+    playwright: cli.js
+  checksum: 10c0/77c1a7cfaca7b3b88804256bb4c0e15c54b8df02690298086ef4a4fc8c2a42b99b69ba1b83906d00cc7ddb322ce8b2f19f0238f189913607c679779a4d132da1
+  languageName: node
+  linkType: hard
+
 "@polka/url@npm:^1.0.0-next.24":
   version: 1.0.0-next.28
   resolution: "@polka/url@npm:1.0.0-next.28"
@@ -5128,16 +5160,19 @@ __metadata:
     "@ngrx/operators": "npm:^19.0.1"
     "@ngrx/signals": "npm:^19.0.1"
     "@nx/angular": "npm:20.4.2"
+    "@nx/devkit": "npm:20.4.2"
     "@nx/eslint": "npm:20.4.2"
     "@nx/eslint-plugin": "npm:20.4.2"
     "@nx/jest": "npm:20.4.2"
     "@nx/js": "npm:20.4.2"
     "@nx/nest": "npm:20.4.2"
     "@nx/node": "npm:20.4.2"
+    "@nx/playwright": "npm:20.4.2"
     "@nx/vite": "npm:20.4.2"
     "@nx/web": "npm:20.4.2"
     "@nx/webpack": "npm:20.4.2"
     "@nx/workspace": "npm:20.4.2"
+    "@playwright/test": "npm:^1.36.0"
     "@schematics/angular": "npm:~19.1.0"
     "@swc-node/register": "npm:~1.9.1"
     "@swc/cli": "npm:~0.3.12"
@@ -5157,6 +5192,7 @@ __metadata:
     class-validator: "npm:^0.14.1"
     eslint: "npm:^9.8.0"
     eslint-config-prettier: "npm:^9.0.0"
+    eslint-plugin-playwright: "npm:^1.6.2"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     jest-environment-node: "npm:^29.7.0"
@@ -10187,6 +10223,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-playwright@npm:^1.6.2":
+  version: 1.8.3
+  resolution: "eslint-plugin-playwright@npm:1.8.3"
+  dependencies:
+    globals: "npm:^13.23.0"
+  peerDependencies:
+    eslint: ">=8.40.0"
+    eslint-plugin-jest: ">=25"
+  peerDependenciesMeta:
+    eslint-plugin-jest:
+      optional: true
+  checksum: 10c0/41c90ad82d7bfd336b11d88a7dd4aee3832878f3abc5df0c7e988124ac3d4e0ffc7de760f4e986a275bf088da2a360d177e8a48d6b3193dcb5f60b17138cf0fe
+  languageName: node
+  linkType: hard
+
 "eslint-scope@npm:5.1.1":
   version: 5.1.1
   resolution: "eslint-scope@npm:5.1.1"
@@ -11168,12 +11219,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fsevents@npm:2.3.2":
+  version: 2.3.2
+  resolution: "fsevents@npm:2.3.2"
+  dependencies:
+    node-gyp: "npm:latest"
+  checksum: 10c0/be78a3efa3e181cda3cf7a4637cb527bcebb0bd0ea0440105a3bb45b86f9245b307dc10a2507e8f4498a7d4ec349d1910f4d73e4d4495b16103106e07eee735b
+  conditions: os=darwin
+  languageName: node
+  linkType: hard
+
 "fsevents@npm:^2.3.2, fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
   version: 2.3.3
   resolution: "fsevents@npm:2.3.3"
   dependencies:
     node-gyp: "npm:latest"
   checksum: 10c0/a1f0c44595123ed717febbc478aa952e47adfc28e2092be66b8ab1635147254ca6cfe1df792a8997f22716d4cbafc73309899ff7bfac2ac3ad8cf2e4ecc3ec60
+  conditions: os=darwin
+  languageName: node
+  linkType: hard
+
+"fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>":
+  version: 2.3.2
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  dependencies:
+    node-gyp: "npm:latest"
   conditions: os=darwin
   languageName: node
   linkType: hard
@@ -11387,6 +11457,15 @@ __metadata:
   version: 11.12.0
   resolution: "globals@npm:11.12.0"
   checksum: 10c0/758f9f258e7b19226bd8d4af5d3b0dcf7038780fb23d82e6f98932c44e239f884847f1766e8fa9cc5635ccb3204f7fa7314d4408dd4002a5e8ea827b4018f0a1
+  languageName: node
+  linkType: hard
+
+"globals@npm:^13.23.0":
+  version: 13.24.0
+  resolution: "globals@npm:13.24.0"
+  dependencies:
+    type-fest: "npm:^0.20.2"
+  checksum: 10c0/d3c11aeea898eb83d5ec7a99508600fbe8f83d2cf00cbb77f873dbf2bcb39428eff1b538e4915c993d8a3b3473fa71eeebfe22c9bb3a3003d1e26b1f2c8a42cd
   languageName: node
   linkType: hard
 
@@ -15776,6 +15855,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.50.1":
+  version: 1.50.1
+  resolution: "playwright-core@npm:1.50.1"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/c158764257d870897c31807a830ddcc3f5aaf4376719e05aeada3489a01f751650b2dc43e027201a40405a1b075084e89f58cd3730a985a229efe9d8cecfe360
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.50.1":
+  version: 1.50.1
+  resolution: "playwright@npm:1.50.1"
+  dependencies:
+    fsevents: "npm:2.3.2"
+    playwright-core: "npm:1.50.1"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 10c0/b292ee6e0d122748a3d024b85ace86a0d9c848fc4121685d90ffc5d43d6bcf13ed7dc7488b1055f69040599c420052306ccba6fabfe2f69a15fc109c55171207
+  languageName: node
+  linkType: hard
+
 "pluralize@npm:8.0.0":
   version: 8.0.0
   resolution: "pluralize@npm:8.0.0"
@@ -18747,6 +18850,13 @@ __metadata:
   version: 4.1.0
   resolution: "type-detect@npm:4.1.0"
   checksum: 10c0/df8157ca3f5d311edc22885abc134e18ff8ffbc93d6a9848af5b682730ca6a5a44499259750197250479c5331a8a75b5537529df5ec410622041650a7f293e2a
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "type-fest@npm:0.20.2"
+  checksum: 10c0/dea9df45ea1f0aaa4e2d3bed3f9a0bfe9e5b2592bddb92eb1bf06e50bcf98dbb78189668cd8bc31a0511d3fc25539b4cd5c704497e53e93e2d40ca764b10bfc3
   languageName: node
   linkType: hard
 
