@@ -46,4 +46,4 @@ Thumbs.db
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 
-**/.env.local
+/**/.env.local
