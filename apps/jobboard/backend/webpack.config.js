@@ -21,7 +21,6 @@ module.exports = {
   ],
 };
 
-
 function getEntryPoints() {
   const entityFiles = sync(
     resolve(

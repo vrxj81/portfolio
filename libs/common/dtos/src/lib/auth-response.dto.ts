@@ -1,9 +1,8 @@
-import { IsString } from 'class-validator';
+import { Type, Static } from '@sinclair/typebox';
 
-export class AuthResponseDto {
-  @IsString()
-  accessToken!: string;
+export const AuthResponseSchema = Type.Object({
+  accessToken: Type.String(),
+  refreshToken: Type.String(),
+});
 
-  @IsString()
-  refreshToken!: string;
-}
+export type AuthResponseDto = Static<typeof AuthResponseSchema>;

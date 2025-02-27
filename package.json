@@ -87,6 +87,7 @@
     "@nestjs/typeorm": "11.0.0",
     "@ngrx/operators": "^19.0.1",
     "@ngrx/signals": "^19.0.1",
+    "@sinclair/typebox": "^0.34.28",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",

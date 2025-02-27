@@ -6,11 +6,17 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: 'register',
-        loadComponent: () => import('@portfolio/auth-frontend-ng-ui').then(m => m.PortfolioAuthUiRegisterFormComponent),
+        loadComponent: () =>
+          import('@portfolio/auth-frontend-ng-ui').then(
+            (m) => m.PortfolioAuthUiRegisterFormComponent,
+          ),
       },
       {
         path: 'login',
-        loadComponent: () => import('@portfolio/auth-frontend-ng-ui').then(m => m.PortfolioAuthUiLoginFormComponent),
+        loadComponent: () =>
+          import('@portfolio/auth-frontend-ng-ui').then(
+            (m) => m.PortfolioAuthUiLoginFormComponent,
+          ),
       },
     ],
   },

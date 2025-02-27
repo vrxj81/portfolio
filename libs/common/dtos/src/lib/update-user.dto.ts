@@ -1,43 +1,21 @@
-import { IRole, IUser } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsEmail,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
-import { UpdateRoleDto } from './update-role.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-export class UpdateUserDto
-  implements Partial<Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>>
-{
-  @IsOptional()
-  @IsString()
-  username?: string;
+export const UpdateUserSchema = Type.Object({
+  username: Type.Optional(Type.String()),
+  email: Type.Optional(Type.String()),
+  password: Type.Optional(Type.String()),
+  isActive: Type.Optional(Type.Boolean()),
+  accessToken: Type.Optional(Type.String()),
+  refreshToken: Type.Optional(Type.String()),
+  roles: Type.Optional(
+    Type.Array(
+      Type.Object({
+        id: Type.String(),
+        name: Type.Optional(Type.String()),
+        description: Type.Optional(Type.String()),
+      }),
+    ),
+  ),
+});
 
-  @IsOptional()
-  @IsEmail()
-  email?: string;
-
-  @IsOptional()
-  @IsString()
-  password?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  isActive?: boolean;
-
-  @IsOptional()
-  @IsString()
-  accessToken?: string;
-
-  @IsOptional()
-  @IsString()
-  refreshToken?: string;
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => UpdateRoleDto)
-  roles?: IRole[];
-}
+export type UpdateUserDto = Static<typeof UpdateUserSchema>;

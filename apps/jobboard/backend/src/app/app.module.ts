@@ -13,11 +13,7 @@ import { Permission } from '@portfolio/data-access-backend-permissions';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [
-        jwtConfig,
-        authConfig,
-        dbConfig,
-      ]
+      load: [jwtConfig, authConfig, dbConfig],
     }),
     TypeOrmModule.forRootAsync({
       inject: [dbConfig.KEY],
