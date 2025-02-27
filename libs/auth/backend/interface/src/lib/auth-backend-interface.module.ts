@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthBackendApplicationModule } from '@portfolio/auth-backend-application';
 
 @Module({
-  imports: [AuthBackendApplicationModule],
+  imports: [AuthBackendApplicationModule.register({ authStrategies: ['jwt'] })],
   controllers: [AuthController],
   providers: [],
   exports: [],

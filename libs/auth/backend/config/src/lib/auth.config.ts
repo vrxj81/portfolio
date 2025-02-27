@@ -2,8 +2,9 @@ import { Inject } from '@nestjs/common';
 import { ConfigType, registerAs } from '@nestjs/config';
 
 export const authConfig = registerAs('auth', () => ({
-  defaultRole: process.env['DEFAULT_ROLE'],
-  activationRequired: process.env['ACTIVATION_REQUIRED'] === 'true',
+  defaultRole: process.env['AUTH_DEFAULT_ROLE'] || 'user',
+  activationRequired: process.env['AUTH_ACTIVATION_REQUIRED'] === 'true',
+  authStrategies: (process.env['AUTH_STRATEGIES'] || 'jwt').split(','),
 }));
 
 export type AuthConfig = ConfigType<typeof authConfig>;
