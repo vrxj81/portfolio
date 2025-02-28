@@ -29,9 +29,12 @@ const runExecutor: PromiseExecutor<TypeormMigrationExecutorSchema> = async (
 export default runExecutor;
 
 function buildCommand(options: TypeormMigrationExecutorSchema, projectRoot:string): string {
-  const command = `ts-node -r tsconfig-paths/register --project ${projectRoot}/tsconfig.app.json ./node_modules/.bin/typeorm migration:${options.command} -d ${projectRoot}/ormconfig.local.ts`;
+  let command = `ts-node -r tsconfig-paths/register --project ${projectRoot}/tsconfig.app.json ./node_modules/.bin/typeorm migration:${options.command}`;
+  if (['generate', 'run', 'show', 'revert','show'].includes(options.command)) {
+    command = `${command} -d ${projectRoot}/ormconfig.local.ts`;
+  }
   if (options.name) {
-    return `${command} ${projectRoot}/src/migrations/${options.name}`;
+    command = `${command} ${projectRoot}/src/migrations/${options.name}`;
   }
   return command;
 }
