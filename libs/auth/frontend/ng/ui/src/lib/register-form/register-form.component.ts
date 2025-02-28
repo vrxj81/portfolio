@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -34,7 +34,7 @@ export class PortfolioAuthUiRegisterFormComponent {
       email: this.fb.control(null, [Validators.required, Validators.email]),
       password: this.fb.control(null, [Validators.required]),
       confirmPassword: this.fb.control(null, [Validators.required]),
-      role: this.fb.control(this.role()),
+      role: this.fb.control(null),
     },
     {
       validators: [
@@ -48,6 +48,12 @@ export class PortfolioAuthUiRegisterFormComponent {
       ],
     },
   );
+
+  constructor() {
+    effect(() => {
+      this.registerForm.get('role')?.patchValue(this.role());
+    });
+  }
 
   onSubmit() {
     if (this.registerForm.valid) {
