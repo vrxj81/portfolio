@@ -1,33 +1,18 @@
-import { IRecruiterProfile, IUser } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import { ValidateNested, IsString, IsOptional } from 'class-validator';
-import { CreateUserDto } from './create-user.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-// Recruiter Profile DTOs
-export class CreateRecruiterProfileDto
-  implements Omit<IRecruiterProfile, 'createdAt' | 'updatedAt'>
-{
-  @ValidateNested()
-  @Type(() => CreateUserDto)
-  user!: IUser;
+export const CreateRecruiterProfileSchema = Type.Object({
+  user: Type.Object({
+    email: Type.String(),
+    password: Type.String(),
+  }),
+  fullName: Type.String(),
+  company: Type.String(),
+  position: Type.String(),
+  bio: Type.Optional(Type.String()),
+  contactEmail: Type.String(),
+  contactPhone: Type.Optional(Type.String()),
+});
 
-  @IsString()
-  fullName!: string;
-
-  @IsString()
-  company!: string;
-
-  @IsString()
-  position!: string;
-
-  @IsOptional()
-  @IsString()
-  bio?: string;
-
-  @IsString()
-  contactEmail!: string;
-
-  @IsOptional()
-  @IsString()
-  contactPhone?: string;
-}
+export type CreateRecruiterProfileDto = Static<
+  typeof CreateRecruiterProfileSchema
+>;

@@ -1,29 +1,30 @@
-import { IRole, IPermission, IUser } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import { ValidateNested, IsOptional, IsString, IsArray } from 'class-validator';
-import { CreateUserDto } from './create-user.dto';
-import { CreatePermissionDto } from './create-permission.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-// Role DTOs
-export class CreateRoleDto
-  implements Omit<IRole, 'id' | 'createdAt' | 'updatedAt'>
-{
-  @IsString()
-  name!: string;
+export const CreateRoleSchema = Type.Object({
+  name: Type.String(),
+  description: Type.Optional(Type.String()),
+  users: Type.Optional(
+    Type.Array(
+      Type.Object({
+        username: Type.String(),
+        email: Type.String(),
+        password: Type.Optional(Type.String()),
+        isActive: Type.Boolean(),
+        accessToken: Type.Optional(Type.String()),
+        refreshToken: Type.Optional(Type.String()),
+      }),
+    ),
+  ),
+  permissions: Type.Optional(
+    Type.Array(
+      Type.Object({
+        name: Type.String(),
+        action: Type.String(),
+        subject: Type.String(),
+        conditions: Type.Optional(Type.String()),
+      }),
+    ),
+  ),
+});
 
-  @IsOptional()
-  @IsString()
-  description?: string;
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateUserDto)
-  users?: IUser[];
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreatePermissionDto)
-  permissions?: IPermission[];
-}
+export type CreateRoleDto = Static<typeof CreateRoleSchema>;

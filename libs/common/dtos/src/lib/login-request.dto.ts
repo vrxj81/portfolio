@@ -1,9 +1,8 @@
-import { IsString } from 'class-validator';
+import { Type, Static } from '@sinclair/typebox';
 
-export class LoginRequestDto {
-  @IsString()
-  email!: string;
+export const LoginRequestSchema = Type.Object({
+  email: Type.String(),
+  password: Type.String(),
+});
 
-  @IsString()
-  password!: string;
-}
+export type LoginRequestDto = Static<typeof LoginRequestSchema>;

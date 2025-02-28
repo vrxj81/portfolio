@@ -1,10 +1,8 @@
-import { IsNumber } from 'class-validator';
+import { Type, Static } from '@sinclair/typebox';
 
-// Salary Range DTO
-export class SalaryRangeDto {
-  @IsNumber()
-  min!: number;
+export const SalaryRangeSchema = Type.Object({
+  min: Type.Number(),
+  max: Type.Number(),
+});
 
-  @IsNumber()
-  max!: number;
-}
+export type SalaryRangeDto = Static<typeof SalaryRangeSchema>;

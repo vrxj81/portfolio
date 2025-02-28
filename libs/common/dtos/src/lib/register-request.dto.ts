@@ -1,24 +1,11 @@
-import { IUser } from '@portfolio/common-models';
-import { IsOptional, IsString } from 'class-validator';
-import { Match } from './custom/match-constraint';
+import { Type, Static } from '@sinclair/typebox';
 
-export class RegisterRequestDto
-  implements Pick<IUser, 'username' | 'email' | 'password'>
-{
-  @IsString()
-  username!: string;
+export const RegisterRequestSchema = Type.Object({
+  username: Type.String(),
+  email: Type.String(),
+  password: Type.String(),
+  confirmPassword: Type.String(),
+  role: Type.Optional(Type.String()),
+});
 
-  @IsString()
-  email!: string;
-
-  @IsString()
-  password!: string;
-
-  @IsString()
-  @Match('password', { message: 'Passwords do not match' })
-  confirmPassword!: string;
-
-  @IsOptional()
-  @IsString()
-  role?: string;
-}
+export type RegisterRequestDto = Static<typeof RegisterRequestSchema>;

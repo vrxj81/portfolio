@@ -1,40 +1,20 @@
-import { IRole, IUser } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsEmail,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
-import { CreateRoleDto } from './create-role.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-export class CreateUserDto
-  implements Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>
-{
-  @IsString()
-  username!: string;
+export const CreateUserSchema = Type.Object({
+  username: Type.String(),
+  email: Type.String(),
+  password: Type.Optional(Type.String()),
+  isActive: Type.Boolean(),
+  accessToken: Type.Optional(Type.String()),
+  refreshToken: Type.Optional(Type.String()),
+  roles: Type.Optional(
+    Type.Array(
+      Type.Object({
+        name: Type.String(),
+        description: Type.Optional(Type.String()),
+      }),
+    ),
+  ),
+});
 
-  @IsEmail()
-  email!: string;
-
-  @IsOptional()
-  @IsString()
-  password?: string;
-
-  @IsBoolean()
-  isActive!: boolean;
-
-  @IsOptional()
-  @IsString()
-  accessToken?: string;
-
-  @IsOptional()
-  @IsString()
-  refreshToken?: string;
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => CreateRoleDto)
-  roles?: IRole[];
-}
+export type CreateUserDto = Static<typeof CreateUserSchema>;

@@ -1,40 +1,19 @@
-import { IApplicantProfile, IUser } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import { ValidateNested, IsOptional, IsString, IsArray } from 'class-validator';
-import { CreateUserDto } from './create-user.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-// Applicant Profile DTOs
-export class CreateApplicantProfileDto
-  implements Omit<IApplicantProfile, 'createdAt' | 'updatedAt'>
-{
-  @ValidateNested()
-  @Type(() => CreateUserDto)
-  user!: IUser;
+export const CreateApplicantProfileSchema = Type.Object({
+  user: Type.Object({
+    email: Type.String(),
+    password: Type.String(),
+  }),
+  fullName: Type.String(),
+  resumeUrl: Type.Optional(Type.String()),
+  coverLetter: Type.Optional(Type.String()),
+  portfolioUrl: Type.Optional(Type.String()),
+  skills: Type.Array(Type.String()),
+  experience: Type.Array(Type.String()),
+  education: Type.Array(Type.String()),
+});
 
-  @IsString()
-  fullName!: string;
-
-  @IsOptional()
-  @IsString()
-  resumeUrl?: string;
-
-  @IsOptional()
-  @IsString()
-  coverLetter?: string;
-
-  @IsOptional()
-  @IsString()
-  portfolioUrl?: string;
-
-  @IsArray()
-  @IsString({ each: true })
-  skills!: string[];
-
-  @IsArray()
-  @IsString({ each: true })
-  experience!: string[];
-
-  @IsArray()
-  @IsString({ each: true })
-  education!: string[];
-}
+export type CreateApplicantProfileDto = Static<
+  typeof CreateApplicantProfileSchema
+>;

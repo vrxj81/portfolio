@@ -38,6 +38,9 @@
       "options": {
         "passWithNoTests": true
       }
+    },
+    "typeorm": {
+      "executor": "@portfolio/typeorm:typeorm-migration"
     }
   }
 }

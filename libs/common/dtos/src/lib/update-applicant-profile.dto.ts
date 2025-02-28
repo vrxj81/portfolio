@@ -1,44 +1,22 @@
-import { IApplicantProfile, IUser } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested, IsString, IsArray } from 'class-validator';
-import { UpdateUserDto } from './update-user.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-export class UpdateApplicantProfileDto
-  implements Partial<Omit<IApplicantProfile, 'createdAt' | 'updatedAt'>>
-{
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => UpdateUserDto)
-  user?: IUser;
+export const UpdateApplicantProfileSchema = Type.Object({
+  user: Type.Optional(
+    Type.Object({
+      username: Type.Optional(Type.String()),
+      email: Type.Optional(Type.String()),
+      role: Type.Optional(Type.String()),
+    }),
+  ),
+  fullName: Type.Optional(Type.String()),
+  resumeUrl: Type.Optional(Type.String()),
+  coverLetter: Type.Optional(Type.String()),
+  portfolioUrl: Type.Optional(Type.String()),
+  skills: Type.Optional(Type.Array(Type.String())),
+  experience: Type.Optional(Type.Array(Type.String())),
+  education: Type.Optional(Type.Array(Type.String())),
+});
 
-  @IsOptional()
-  @IsString()
-  fullName?: string;
-
-  @IsOptional()
-  @IsString()
-  resumeUrl?: string;
-
-  @IsOptional()
-  @IsString()
-  coverLetter?: string;
-
-  @IsOptional()
-  @IsString()
-  portfolioUrl?: string;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  skills?: string[];
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  experience?: string[];
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  education?: string[];
-}
+export type UpdateApplicantProfileDto = Static<
+  typeof UpdateApplicantProfileSchema
+>;
