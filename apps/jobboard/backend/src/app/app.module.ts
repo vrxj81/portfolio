@@ -27,7 +27,7 @@ import { Permission } from '@portfolio/data-access-backend-permissions';
         synchronize: dbConfig.synchronize,
         logging: dbConfig.logging,
         autoLoadEntities: true,
-        namingStrategry: dbConfig.namingStragegy,
+        namingStrategy: dbConfig.namingStragegy,
         entities: [User, Role, Permission],
       }),
     }),
