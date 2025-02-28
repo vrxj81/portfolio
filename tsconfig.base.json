@@ -51,7 +51,8 @@
       "@portfolio/styles-scss": ["libs/shared/styles/scss/src/index.scss"],
       "@portfolio/testing-data-mocks-util": [
         "libs/shared/testing/data-mocks/util/src/index.ts"
-      ]
+      ],
+      "@portfolio/typeorm": ["tools/typeorm/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

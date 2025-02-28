@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "typeorm-migration": {
+      "implementation": "./src/executors/migration",
+      "schema": "./src/executors/schema.json",
+      "description": "TypeORM CLI migration executor"
+    }
+  }
+}
