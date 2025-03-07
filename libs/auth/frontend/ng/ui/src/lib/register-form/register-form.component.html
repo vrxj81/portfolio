@@ -6,7 +6,7 @@
       registerForm.get('username')?.invalid &&
       registerForm.get('username')?.touched
     ) {
-      Username is required.
+      <span>Username is required.</span>
     }
   </div>
 
@@ -17,10 +17,10 @@
       registerForm.get('email')?.invalid && registerForm.get('email')?.touched
     ) {
       @if (registerForm.get('email')?.errors?.['required']) {
-        Email is required.
+        <span>Email is required.</span>
       }
       @if (registerForm.get('email')?.errors?.['email']) {
-        Invalid email format.
+        <span>Invalid email format.</span>
       }
     }
   </div>
@@ -32,7 +32,7 @@
       registerForm.get('password')?.invalid &&
       registerForm.get('password')?.touched
     ) {
-      Password is required.
+      <span>Password is required.</span>
     }
   </div>
 
@@ -47,13 +47,13 @@
       registerForm.get('confirmPassword')?.invalid &&
       registerForm.get('confirmPassword')?.touched
     ) {
-      Confirm Password is required.
+      <span>Confirm Password is required.</span>
     }
     @if (
       registerForm.errors?.['passwordMismatch'] &&
       registerForm.get('confirmPassword')?.touched
     ) {
-      Passwords do not match.
+      <span>Passwords do not match.</span>
     }
   </div>
 
