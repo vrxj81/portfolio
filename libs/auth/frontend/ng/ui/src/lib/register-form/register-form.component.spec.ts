@@ -9,8 +9,6 @@ import { of } from 'rxjs';
 describe('PortfolioAuthUiRegisterFormComponent', () => {
   let component: PortfolioAuthUiRegisterFormComponent;
   let fixture: ComponentFixture<PortfolioAuthUiRegisterFormComponent>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let authStore: any;
 
   const mockAuthStore = {
     register: jest.fn(),
@@ -26,7 +24,6 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
 
     fixture = TestBed.createComponent(PortfolioAuthUiRegisterFormComponent);
     component = fixture.componentInstance;
-    authStore = TestBed.inject(AuthStore);
     fixture.detectChanges();
   });
 
@@ -90,10 +87,11 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
       email: '',
       password: '',
       confirmPassword: '',
+      role: '',
     });
     component.onSubmit();
 
-    expect(authStore.register).not.toHaveBeenCalled();
+    expect(mockAuthStore.register).not.toHaveBeenCalled();
   });
 
   it('should call authStore.register when form is valid and submitted', () => {
@@ -102,12 +100,13 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
       email: 'test@example.com',
       password: 'password',
       confirmPassword: 'password',
+      role: 'user',
     };
 
     component.registerForm.setValue(registerRequest);
     component.onSubmit();
 
-    expect(authStore.register).toHaveBeenCalledWith(registerRequest);
+    expect(mockAuthStore.register).toHaveBeenCalledWith(registerRequest);
   });
 
   it('should disable the submit button when form is invalid or loading', () => {
@@ -121,6 +120,7 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
       email: '',
       password: '',
       confirmPassword: '',
+      role: '',
     });
     fixture.detectChanges();
     expect(submitButton.nativeElement.disabled).toBeTruthy();
@@ -131,6 +131,7 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
       email: 'test@example.com',
       password: 'password',
       confirmPassword: 'password',
+      role: 'user',
     });
     mockAuthStore.isLoading.mockReturnValue(of(true));
     fixture.whenStable().then(() => {

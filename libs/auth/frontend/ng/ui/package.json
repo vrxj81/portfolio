@@ -5,7 +5,8 @@
     "@angular/core": "^19.1.0",
     "@angular/forms": "~19.1.0",
     "@portfolio/auth-frontend-ng-state": "0.0.1",
-    "@portfolio/common-dtos": "0.0.1"
+    "@portfolio/common-dtos": "0.0.1",
+    "@angular/router": "~19.1.0"
   },
   "sideEffects": false
 }

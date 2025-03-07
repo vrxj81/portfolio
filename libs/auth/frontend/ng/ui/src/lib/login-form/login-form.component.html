@@ -5,10 +5,10 @@
     @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
       <div>
         @if (loginForm.get('email')?.errors?.['required']) {
-          <small>Email is required.</small>
+          <span>Email is required.</span>
         }
         @if (loginForm.get('email')?.errors?.['email']) {
-          <small>Invalid email format.</small>
+          <span>Invalid email format.</span>
         }
       </div>
     }
@@ -21,7 +21,7 @@
     ) {
       <div>
         @if (loginForm.get('password')?.errors?.['required']) {
-          <small>Password is required.</small>
+          <span>Password is required.</span>
         }
       </div>
     }
