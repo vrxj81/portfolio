@@ -10,7 +10,7 @@ import { IUser } from '@portfolio/common-models';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@portfolio/data-access-backend-users';
 import { compare, genSalt, hash } from 'bcrypt';
-import { Role } from '@portfolio/data-access-backend-roles';
+import { Role } from '@portfolio/backend-data-access-roles';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   AuthConfig,

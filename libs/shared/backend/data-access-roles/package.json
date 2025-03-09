@@ -1,5 +1,5 @@
 {
-  "name": "@portfolio/data-access-backend-roles",
+  "name": "@portfolio/backend-data-access-roles",
   "version": "0.0.1",
   "private": true,
   "type": "commonjs",

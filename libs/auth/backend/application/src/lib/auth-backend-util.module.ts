@@ -12,7 +12,7 @@ import { JwtAuthProvider } from './providers/jwt-auth.provider';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { DataAccessBackendUsersModule } from '@portfolio/data-access-backend-users';
-import { DataAccessBackendRolesModule } from '@portfolio/data-access-backend-roles';
+import { DataAccessBackendRolesModule } from '@portfolio/backend-data-access-roles';
 import {
   AUTH_MODULE_OPTIONS,
   ConfigurableModuleClass,
