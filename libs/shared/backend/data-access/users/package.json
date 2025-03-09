@@ -1,5 +1,5 @@
 {
-  "name": "@portfolio/backend/data-access/users",
+  "name": "@portfolio/backend-data-access-users",
   "version": "0.0.1",
   "private": true,
   "type": "commonjs",

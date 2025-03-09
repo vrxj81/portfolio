@@ -43,7 +43,7 @@
       "@portfolio/backend-data-access-roles": [
         "libs/shared/backend/data-access/roles/src/index.ts"
       ],
-      "@portfolio/backend/data-access/users": [
+      "@portfolio/backend-data-access-users": [
         "libs/shared/backend/data-access/users/src/index.ts"
       ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
