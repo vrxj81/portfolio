@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtAuthProvider } from './jwt-auth.provider';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@portfolio/backend/data-access/users';
+import { User } from '@portfolio/backend-data-access-users';
 import { Role } from '@portfolio/backend-data-access-roles';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { userFactory } from '@portfolio/testing-data-mocks-util';

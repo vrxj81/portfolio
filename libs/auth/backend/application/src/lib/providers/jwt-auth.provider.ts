@@ -8,7 +8,7 @@ import {
 } from '@portfolio/common-dtos';
 import { IUser } from '@portfolio/common-models';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@portfolio/backend/data-access/users';
+import { User } from '@portfolio/backend-data-access-users';
 import { compare, genSalt, hash } from 'bcrypt';
 import { Role } from '@portfolio/backend-data-access-roles';
 import { EventEmitter2 } from '@nestjs/event-emitter';
