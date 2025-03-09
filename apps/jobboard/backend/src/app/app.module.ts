@@ -7,7 +7,7 @@ import { DbConfig, dbConfig } from '@portfolio/backend-config';
 import { AuthBackendInterfaceModule } from '@portfolio/auth-backend-interface';
 import { User } from '@portfolio/data-access-backend-users';
 import { Role } from '@portfolio/data-access-backend-roles';
-import { Permission } from '@portfolio/data-access-backend-permissions';
+import { Permission } from '@portfolio/backend-data-access-permissions';
 
 @Module({
   imports: [
