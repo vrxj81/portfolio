@@ -21,6 +21,27 @@ export const appRoutes: Route[] = [
             (m) => m.PortfolioAuthUiLoginFormComponent,
           ),
       },
+      {
+        path: 'activate/:id/:token',
+        loadComponent: () =>
+          import('@portfolio/auth-frontend-ng-ui').then(
+            (m) => m.PortfolioAuthUiActivateComponentComponent,
+          ),
+      },
+      {
+        path: 'forgot-password',
+        loadComponent: () =>
+          import('@portfolio/auth-frontend-ng-ui').then(
+            (m) => m.PortfolioAuthUiForgotPasswordComponent,
+          ),
+      },
+      {
+        path: 'reset-password/:token',
+        loadComponent: () =>
+          import('@portfolio/auth-frontend-ng-ui').then(
+            (m) => m.PortfolioAuthUiResetPasswordComponent,
+          ),
+      },
     ],
   },
 ];
