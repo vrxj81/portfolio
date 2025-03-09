@@ -41,7 +41,7 @@
         "libs/shared/backend/data-access/permissions/src/index.ts"
       ],
       "@portfolio/backend-data-access-roles": [
-        "libs/shared/backend/data-access-roles/src/index.ts"
+        "libs/shared/backend/data-access/roles/src/index.ts"
       ],
       "@portfolio/backend/data-access/users": [
         "libs/shared/backend/data-access/users/src/index.ts"
