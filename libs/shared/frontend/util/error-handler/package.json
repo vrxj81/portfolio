@@ -1,0 +1,9 @@
+{
+  "name": "@portfolio/frontend-util-error-handler",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^19.1.0",
+    "@portfolio/common-models": "0.0.1"
+  },
+  "sideEffects": false
+}
