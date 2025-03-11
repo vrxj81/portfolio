@@ -24,6 +24,7 @@ export class PortfolioAuthUiLoginFormComponent {
   private readonly fb = inject(FormBuilder);
   readonly authUser = this.authStore.user;
   readonly isLoading = this.authStore.isLoading;
+  readonly error = this.authStore.error;
   readonly loginForm = this.fb.group<LoginForm>({
     email: this.fb.control(null, [Validators.required, Validators.email]),
     password: this.fb.control(null, [Validators.required]),
