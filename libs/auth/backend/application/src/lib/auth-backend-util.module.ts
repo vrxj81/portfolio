@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Abstract,
   ClassProvider,
   ExistingProvider,
   FactoryProvider,
@@ -52,6 +53,7 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
       | ValueProvider<any>
       | FactoryProvider<any>
       | ExistingProvider<any>
+      | Abstract<any>
     )[] = [];
     switch (true) {
       case options.authStrategies.includes('jwt'):
@@ -75,7 +77,7 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
         ];
         exports = [
           ...exports,
-          { provide: AuthService, useClass: JwtAuthProvider },
+          AuthService,
           JwtAuthProvider,
           JwtStrategy,
         ];
