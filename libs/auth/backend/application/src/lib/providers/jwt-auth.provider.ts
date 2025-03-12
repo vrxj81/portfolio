@@ -137,7 +137,7 @@ export class JwtAuthProvider implements AuthService {
       },
     });
     if (!user) {
-      throw new Error('Invalid reset token');
+      throw new BadRequestException('Invalid reset token');
     }
     await this.userRepository.update(user, {
       password: await hash(newPassword, await genSalt()),
