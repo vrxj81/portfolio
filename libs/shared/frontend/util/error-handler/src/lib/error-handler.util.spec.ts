@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 describe('handleHttpError', () => {
   it('should handle HttpErrorResponse correctly', () => {
     const errorResponse = new HttpErrorResponse({
-      error: 'test 404 error',
+      error: { error: 'test 404 error', message: 'Not Found' },
       status: 404,
       statusText: 'Not Found',
     });
@@ -12,9 +12,9 @@ describe('handleHttpError', () => {
     const result = handleHttpError(errorResponse);
 
     expect(result).toEqual({
-      message: errorResponse.message,
-      code: errorResponse.status,
-      stack: errorResponse.statusText,
+      error: 'test 404 error',
+      message: 'Not Found',
+      code: 404,
     });
   });
 
@@ -24,8 +24,10 @@ describe('handleHttpError', () => {
     const result = handleHttpError(unknownError);
 
     expect(result).toEqual({
-      message: 'An unexpected error occurred',
+      error: 'Internal Server Error',
+      message: 'Unknown error',
       code: 500,
+      stack: unknownError.stack,
     });
   });
 
@@ -33,6 +35,7 @@ describe('handleHttpError', () => {
     const result = handleHttpError('Some random string');
 
     expect(result).toEqual({
+      error: 'Internal Server Error',
       message: 'An unexpected error occurred',
       code: 500,
     });
@@ -42,6 +45,7 @@ describe('handleHttpError', () => {
     const result = handleHttpError(null);
 
     expect(result).toEqual({
+      error: 'Internal Server Error',
       message: 'An unexpected error occurred',
       code: 500,
     });
@@ -51,6 +55,7 @@ describe('handleHttpError', () => {
     const result = handleHttpError(undefined);
 
     expect(result).toEqual({
+      error: 'Internal Server Error',
       message: 'An unexpected error occurred',
       code: 500,
     });
