@@ -80,7 +80,7 @@ export class Init1740738826424 implements MigrationInterface {
         `);
         await queryRunner.query(`
             ALTER TABLE "user_roles_roles"
-            ADD CONSTRAINT "FK_76bfcdfc62322ea0a088cea9efc" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE
+            ADD CONSTRAINT "FK_76bfcdfc62322ea0a088cea9efc" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
         `);
         await queryRunner.query(`
             ALTER TABLE "user_roles_roles"
@@ -123,7 +123,7 @@ export class Init1740738826424 implements MigrationInterface {
             DROP TABLE "permissions"
         `);
         await queryRunner.query(`
-            DROP TABLE "user"
+            DROP TABLE "users"
         `);
         await queryRunner.query(`
             DROP TABLE "roles"
