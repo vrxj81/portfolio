@@ -35,7 +35,7 @@ describe('JwtAuthProvider', () => {
   (bcrypt.compare as jest.Mock) = compare;
 
   const mockUserRepository = {
-    findOneOrFail: jest.fn().mockResolvedValue(user),
+    findOne: jest.fn().mockResolvedValue(user),
     create: jest.fn().mockReturnValue(user),
     save: jest.fn().mockReturnValue(user),
     update: jest.fn((data: Partial<IUser>) => {
@@ -44,11 +44,12 @@ describe('JwtAuthProvider', () => {
   };
 
   const mockRoleRepository = {
-    findOneOrFail: jest.fn().mockResolvedValue(role),
+    findOne: jest.fn().mockResolvedValue(role),
   };
 
   const mockJwtService = {
     sign: jest.fn().mockReturnValue(user.accessToken),
+    verify: jest.fn().mockReturnValue({ sub: user.id }),
   };
 
   const mockEventEmitter = {
@@ -150,7 +151,7 @@ describe('JwtAuthProvider', () => {
     });
 
     it('should throw an error if credentials are invalid', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
       await expect(provider.login(loginRequest)).rejects.toThrow(
         'Invalid credentials',
       );
@@ -169,7 +170,7 @@ describe('JwtAuthProvider', () => {
     });
 
     it('should throw an error if activation token is invalid', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
 
       await expect(
         provider.activate('invalidId', 'invalidToken'),
@@ -189,7 +190,7 @@ describe('JwtAuthProvider', () => {
     });
 
     it('should throw an error if user is not found', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
 
       await expect(
         provider.forgotPassword('nonexistent@example.com'),
@@ -212,11 +213,37 @@ describe('JwtAuthProvider', () => {
     });
 
     it('should throw an error if reset token is invalid', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
 
       await expect(
         provider.resetPassword('invalidToken', 'newPassword'),
       ).rejects.toThrow('Invalid reset token');
+    });
+  });
+  describe('refreshToken', () => {
+    it('should refresh token', async () => {
+      const result = await provider.refreshToken(user.accessToken || '');
+
+      expect(result).toEqual({
+        accessToken: user.accessToken,
+        refreshToken: user.accessToken,
+      });
+    });
+    it('should throw an error if refresh token is invalid', async () => {
+      mockJwtService.verify.mockImplementationOnce(() => {
+        throw new Error('Invalid token');
+      });
+
+      await expect(provider.refreshToken('invalidToken')).rejects.toThrow(
+        'Invalid refresh token',
+      );
+    });
+    it('should throw an error if user is not found', async () => {
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
+
+      await expect(provider.refreshToken('invalidToken')).rejects.toThrow(
+        'User not found',
+      );
     });
   });
 });
