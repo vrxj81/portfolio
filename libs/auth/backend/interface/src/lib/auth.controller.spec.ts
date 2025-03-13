@@ -28,6 +28,9 @@ describe('AuthController', () => {
     activate: jest.fn().mockResolvedValue({ activated: true }),
     forgotPassword: jest.fn().mockResolvedValue({ forgot: true }),
     resetPassword: jest.fn().mockResolvedValue({ reset: true }),
+    refreshToken: jest
+      .fn()
+      .mockResolvedValue({ accessToken: 'token', refreshToken: 'token' }),
   };
 
   beforeEach(async () => {
@@ -77,6 +80,14 @@ describe('AuthController', () => {
     it('should return reset', async () => {
       expect(await controller.resetPassword('token', 'password')).toEqual({
         reset: true,
+      });
+    });
+  });
+  describe('refreshToken', () => {
+    it('should return a token', async () => {
+      expect(await controller.refreshToken('token')).toEqual({
+        accessToken: 'token',
+        refreshToken: 'token',
       });
     });
   });

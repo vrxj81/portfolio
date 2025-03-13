@@ -42,4 +42,9 @@ export class AuthController {
   ): Promise<{ reset: boolean }> {
     return this.authService.resetPassword(token, password);
   }
+
+  @Post('refresh-token')
+  async refreshToken(@Body() token: string): Promise<AuthResponseDto> {
+    return this.authService.refreshToken(token);
+  }
 }
