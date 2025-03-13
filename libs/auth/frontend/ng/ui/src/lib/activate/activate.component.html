@@ -9,6 +9,8 @@
     <h1 data-status="error">There was an error activating your account</h1>
     <p>
       Please try again or contact support
+      <span>{{ error()?.code }}</span>
+      <span>{{ error()?.message }}</span>
     </p>
   } @else if (isLoading()) {
     <h1 data-status="loading">Activating your account...</h1>

@@ -5,9 +5,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { authConfig, jwtConfig } from '@portfolio/auth-backend-config';
 import { DbConfig, dbConfig } from '@portfolio/backend-config';
 import { AuthBackendInterfaceModule } from '@portfolio/auth-backend-interface';
-import { User } from '@portfolio/data-access-backend-users';
-import { Role } from '@portfolio/data-access-backend-roles';
-import { Permission } from '@portfolio/data-access-backend-permissions';
+import { User } from '@portfolio/backend-data-access-users';
+import { Role } from '@portfolio/backend-data-access-roles';
+import { Permission } from '@portfolio/backend-data-access-permissions';
 
 @Module({
   imports: [

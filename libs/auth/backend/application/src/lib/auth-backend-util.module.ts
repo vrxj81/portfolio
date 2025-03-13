@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Abstract,
   ClassProvider,
   ExistingProvider,
   FactoryProvider,
@@ -11,8 +12,8 @@ import {
 import { JwtAuthProvider } from './providers/jwt-auth.provider';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { DataAccessBackendUsersModule } from '@portfolio/data-access-backend-users';
-import { DataAccessBackendRolesModule } from '@portfolio/data-access-backend-roles';
+import { DataAccessBackendUsersModule } from '@portfolio/backend-data-access-users';
+import { DataAccessBackendRolesModule } from '@portfolio/backend-data-access-roles';
 import {
   AUTH_MODULE_OPTIONS,
   ConfigurableModuleClass,
@@ -52,6 +53,7 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
       | ValueProvider<any>
       | FactoryProvider<any>
       | ExistingProvider<any>
+      | Abstract<any>
     )[] = [];
     switch (true) {
       case options.authStrategies.includes('jwt'):
@@ -75,7 +77,7 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
         ];
         exports = [
           ...exports,
-          { provide: AuthService, useClass: JwtAuthProvider },
+          AuthService,
           JwtAuthProvider,
           JwtStrategy,
         ];

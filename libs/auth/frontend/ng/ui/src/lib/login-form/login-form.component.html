@@ -29,4 +29,10 @@
   <button type="submit" [disabled]="loginForm.invalid || isLoading()">
     Login
   </button>
+  @if (error()) {
+    <div>
+      <span>{{ error()?.code }}</span>
+      <span>{{ error()?.message }}</span>
+    </div>
+  }
 </form>

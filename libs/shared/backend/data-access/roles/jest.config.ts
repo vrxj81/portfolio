@@ -1,5 +1,5 @@
 export default {
-  displayName: 'data-access-backend-roles',
+  displayName: 'backend-data-access-roles',
   preset: '../../../../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
@@ -7,5 +7,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory:
-    '../../../../../coverage/libs/shared/data-access/backend/roles',
+    '../../../../../coverage/libs/shared/backend/data-access/roles',
 };

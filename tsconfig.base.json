@@ -37,16 +37,19 @@
         "libs/auth/frontend/ng/util/src/index.ts"
       ],
       "@portfolio/backend-config": ["libs/shared/backend/config/src/index.ts"],
+      "@portfolio/backend-data-access-permissions": [
+        "libs/shared/backend/data-access/permissions/src/index.ts"
+      ],
+      "@portfolio/backend-data-access-roles": [
+        "libs/shared/backend/data-access/roles/src/index.ts"
+      ],
+      "@portfolio/backend-data-access-users": [
+        "libs/shared/backend/data-access/users/src/index.ts"
+      ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
-      "@portfolio/data-access-backend-permissions": [
-        "libs/shared/data-access/backend/permissions/src/index.ts"
-      ],
-      "@portfolio/data-access-backend-roles": [
-        "libs/shared/data-access/backend/roles/src/index.ts"
-      ],
-      "@portfolio/data-access-backend-users": [
-        "libs/shared/data-access/backend/users/src/index.ts"
+      "@portfolio/frontend-util-error-handler": [
+        "libs/shared/frontend/util/error-handler/src/index.ts"
       ],
       "@portfolio/styles-scss": ["libs/shared/styles/scss/src/index.scss"],
       "@portfolio/testing-data-mocks-util": [

@@ -1,5 +1,5 @@
 export default {
-  displayName: 'data-access-backend-users',
+  displayName: 'backend-data-access-permissions',
   preset: '../../../../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
@@ -7,5 +7,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory:
-    '../../../../../coverage/libs/shared/data-access/backend/users',
+    '../../../../../coverage/libs/shared/backend/data-access/permissions',
 };

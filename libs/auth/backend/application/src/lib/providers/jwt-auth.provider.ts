@@ -8,9 +8,9 @@ import {
 } from '@portfolio/common-dtos';
 import { IUser } from '@portfolio/common-models';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@portfolio/data-access-backend-users';
+import { User } from '@portfolio/backend-data-access-users';
 import { compare, genSalt, hash } from 'bcrypt';
-import { Role } from '@portfolio/data-access-backend-roles';
+import { Role } from '@portfolio/backend-data-access-roles';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   AuthConfig,
@@ -44,9 +44,12 @@ export class JwtAuthProvider implements AuthService {
       registerRequest.password,
       await genSalt(),
     );
-    const role = await this.roleRepository.findOneOrFail({
+    const role = await this.roleRepository.findOne({
       where: { name: registerRequest.role || this.authConfig.defaultRole },
     });
+    if (!role) {
+      throw new BadRequestException('Role not found');
+    }
     const newUser = this.userRepository.create({
       ...registerRequest,
       password: hashedPassword,
@@ -70,7 +73,7 @@ export class JwtAuthProvider implements AuthService {
   }
 
   async login(loginRequest: LoginRequestDto): Promise<AuthResponseDto> {
-    const loginUser: IUser = await this.userRepository.findOneOrFail({
+    const loginUser: IUser | null = await this.userRepository.findOne({
       where: {
         email: loginRequest.email,
       },
@@ -92,7 +95,7 @@ export class JwtAuthProvider implements AuthService {
     userId: string,
     token: string,
   ): Promise<{ activated: boolean }> {
-    const user: IUser = await this.userRepository.findOneOrFail({
+    const user: IUser | null = await this.userRepository.findOne({
       where: {
         id: userId,
         accessToken: token,
@@ -108,7 +111,7 @@ export class JwtAuthProvider implements AuthService {
   }
 
   async forgotPassword(credential: string): Promise<{ forgot: boolean }> {
-    const user = await this.userRepository.findOneOrFail({
+    const user: IUser | null = await this.userRepository.findOne({
       where: {
         email: credential,
       },
@@ -128,13 +131,13 @@ export class JwtAuthProvider implements AuthService {
     token: string,
     newPassword: string,
   ): Promise<{ reset: boolean }> {
-    const user = await this.userRepository.findOneOrFail({
+    const user = await this.userRepository.findOne({
       where: {
         accessToken: token,
       },
     });
     if (!user) {
-      throw new Error('Invalid reset token');
+      throw new BadRequestException('Invalid reset token');
     }
     await this.userRepository.update(user, {
       password: await hash(newPassword, await genSalt()),
@@ -144,15 +147,17 @@ export class JwtAuthProvider implements AuthService {
     return { reset: true };
   }
 
-  private generateTokens(payload: { sub: string; user: IUser }): {
+  private async generateTokens(payload: { sub: string; user: IUser }): Promise<{
     accessToken: string;
     refreshToken: string;
-  } {
-    const accessToken = this.jwtService.sign(payload);
+  }> {
     const refreshPayload = { sub: payload.sub };
-    const refreshToken = this.jwtService.sign(refreshPayload, {
-      expiresIn: this.jwtConfig.refreshTokenTtl,
-    });
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.sign(payload),
+      this.jwtService.sign(refreshPayload, {
+        expiresIn: this.jwtConfig.refreshTokenTtl,
+      }),
+    ]);
     return { accessToken, refreshToken };
   }
 }

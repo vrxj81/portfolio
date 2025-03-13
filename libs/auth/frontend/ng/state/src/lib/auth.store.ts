@@ -12,7 +12,7 @@ import {
 } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { IUser } from '@portfolio/common-models';
+import { IError, IUser } from '@portfolio/common-models';
 import { computed, inject } from '@angular/core';
 import { AuthService } from '@portfolio/auth-frontend-ng-data-access';
 import { Router } from '@angular/router';
@@ -34,7 +34,7 @@ type AuthState = {
   isForgot: boolean;
   isReset: boolean;
   selectedId: string | null;
-  error: string | null;
+  error: IError | null;
   ability: MongoAbility | null;
 };
 
@@ -85,7 +85,7 @@ export const AuthStore = signalStore(
                     router.navigate(['/']);
                   }
                 },
-                error: (error) => patchState(store, { error: error as string }),
+                error: (error) => patchState(store, { error: error as IError }),
                 finalize: () => patchState(store, { isLoading: false }),
               }),
             ),
@@ -105,7 +105,7 @@ export const AuthStore = signalStore(
                     ability: updateAbilitiesForUser(decoded.user),
                   });
                 },
-                error: (error) => patchState(store, { error: error as string }),
+                error: (error) => patchState(store, { error: error as IError }),
                 finalize: () => patchState(store, { isLoading: false }),
               }),
             ),
@@ -129,7 +129,7 @@ export const AuthStore = signalStore(
               tapResponse({
                 next: ({ activated }) =>
                   patchState(store, { isActivated: activated }),
-                error: (error) => patchState(store, { error: error as string }),
+                error: (error) => patchState(store, { error: error as IError }),
                 finalize: () => patchState(store, { isLoading: false }),
               }),
             ),
@@ -143,7 +143,7 @@ export const AuthStore = signalStore(
             authService.forgotPassword(email).pipe(
               tapResponse({
                 next: ({ forgot }) => patchState(store, { isForgot: forgot }),
-                error: (error) => patchState(store, { error: error as string }),
+                error: (error) => patchState(store, { error: error as IError }),
                 finalize: () => patchState(store, { isLoading: false }),
               }),
             ),
@@ -157,7 +157,7 @@ export const AuthStore = signalStore(
             authService.resetPassword(token, password).pipe(
               tapResponse({
                 next: ({ reset }) => patchState(store, { isReset: reset }),
-                error: (error) => patchState(store, { error: error as string }),
+                error: (error) => patchState(store, { error: error as IError }),
                 finalize: () => patchState(store, { isLoading: false }),
               }),
             ),
