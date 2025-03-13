@@ -54,7 +54,7 @@ describe('AuthService', () => {
         },
         (error) => {
           expect(error).toEqual('An error occurred');
-        }
+        },
       );
       const req = httpController.expectOne('/api/auth/login');
       expect(req.request.method).toBe('POST');
@@ -89,7 +89,7 @@ describe('AuthService', () => {
         },
         (error) => {
           expect(error).toEqual('An error occurred');
-        }
+        },
       );
       const req = httpController.expectOne('/api/auth/register');
       expect(req.request.method).toBe('POST');
@@ -116,7 +116,7 @@ describe('AuthService', () => {
         },
         (error) => {
           expect(error).toEqual('An error occurred');
-        }
+        },
       );
       const req = httpController.expectOne(`/api/auth/activate/${userId}`);
       expect(req.request.method).toBe('PATCH');
@@ -141,7 +141,7 @@ describe('AuthService', () => {
         },
         (error) => {
           expect(error).toEqual('An error occurred');
-        }
+        },
       );
       const req = httpController.expectOne('/api/auth/forgot-password');
       expect(req.request.method).toBe('POST');
@@ -168,7 +168,7 @@ describe('AuthService', () => {
         },
         (error) => {
           expect(error).toEqual('An error occurred');
-        }
+        },
       );
       const req = httpController.expectOne(`/api/auth/reset-password/${token}`);
       expect(req.request.method).toBe('PATCH');

@@ -10,9 +10,9 @@ export const appRoutes: Route[] = [
           import('@portfolio/auth-frontend-ng-ui').then(
             (m) => m.PortfolioAuthUiRegisterFormComponent,
           ),
-          data: {
-            role: 'recruiter',
-          },
+        data: {
+          role: 'recruiter',
+        },
       },
       {
         path: 'login',

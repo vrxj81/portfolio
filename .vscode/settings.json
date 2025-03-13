@@ -1,7 +1,5 @@
 {
-  "eslint.validate": [
-    "json"
-  ],
+  "eslint.validate": ["json"],
   "sqltools.connections": [
     {
       "previewLimit": 50,
