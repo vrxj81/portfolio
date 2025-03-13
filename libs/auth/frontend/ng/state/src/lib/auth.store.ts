@@ -3,6 +3,7 @@ import {
   signalStore,
   withComputed,
   withMethods,
+  withProps,
   withState,
 } from '@ngrx/signals';
 import {
@@ -25,6 +26,7 @@ import {
   createMongoAbility,
   MongoAbility,
 } from '@casl/ability';
+import { AUTH_CONFIG } from '@portfolio/auth-frontend-ng-config';
 
 type AuthState = {
   accessToken: string | null;
@@ -55,6 +57,9 @@ export const AuthStore = signalStore(
   withDevtools('Auth'),
   withState(initialState),
   withEntities<IUser>(),
+  withProps(() => ({
+    config: inject(AUTH_CONFIG),
+  })),
   withComputed((state) => ({
     isAuthenticated: computed(() => !!state.accessToken),
     user: computed(() => state.entities()[0]),
@@ -82,7 +87,7 @@ export const AuthStore = signalStore(
                         ability: updateAbilitiesForUser(decoded.user),
                       },
                     );
-                    router.navigate(['/']);
+                    router.navigate([store.config.loginRedirectUrl]);
                   }
                 },
                 error: (error) => patchState(store, { error: error as IError }),
@@ -104,6 +109,7 @@ export const AuthStore = signalStore(
                   patchState(store, addEntity(decoded.user), {
                     ability: updateAbilitiesForUser(decoded.user),
                   });
+                  router.navigate([store.config.loginRedirectUrl]);
                 },
                 error: (error) => patchState(store, { error: error as IError }),
                 finalize: () => patchState(store, { isLoading: false }),
@@ -119,7 +125,7 @@ export const AuthStore = signalStore(
           { accessToken: null, ability: null },
           removeAllEntities(),
         );
-        router.navigate(['/auth/login']);
+        router.navigate([store.config.logoutRedirectUrl]);
       },
       activate: rxMethod<{ userId: string; token: string }>(
         pipe(
