@@ -59,13 +59,13 @@ export class Init1740738826424 implements MigrationInterface {
         `);
         await queryRunner.query(`
             CREATE TABLE "users_roles_roles" (
-                "user_id" uuid NOT NULL,
+                "users_id" uuid NOT NULL,
                 "roles_id" uuid NOT NULL,
-                CONSTRAINT "PK_8b06e2ba94474e062a02081be61" PRIMARY KEY ("user_id", "roles_id")
+                CONSTRAINT "PK_8b06e2ba94474e062a02081be61" PRIMARY KEY ("users_id", "roles_id")
             )
         `);
         await queryRunner.query(`
-            CREATE INDEX "IDX_76bfcdfc62322ea0a088cea9ef" ON "users_roles_roles" ("user_id")
+            CREATE INDEX "IDX_76bfcdfc62322ea0a088cea9ef" ON "users_roles_roles" ("users_id")
         `);
         await queryRunner.query(`
             CREATE INDEX "IDX_1ab50aa885c7b2a4de17b48d3d" ON "users_roles_roles" ("roles_id")
@@ -80,7 +80,7 @@ export class Init1740738826424 implements MigrationInterface {
         `);
         await queryRunner.query(`
             ALTER TABLE "users_roles_roles"
-            ADD CONSTRAINT "FK_76bfcdfc62322ea0a088cea9efc" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
+            ADD CONSTRAINT "FK_76bfcdfc62322ea0a088cea9efc" FOREIGN KEY ("users_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
         `);
         await queryRunner.query(`
             ALTER TABLE "users_roles_roles"
