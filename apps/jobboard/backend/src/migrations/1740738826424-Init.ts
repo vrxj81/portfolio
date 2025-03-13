@@ -58,17 +58,17 @@ export class Init1740738826424 implements MigrationInterface {
             CREATE INDEX "IDX_35f451c91e5274df9bf05479ab" ON "roles_permissions_permissions" ("permissions_id")
         `);
         await queryRunner.query(`
-            CREATE TABLE "user_roles_roles" (
+            CREATE TABLE "users_roles_roles" (
                 "user_id" uuid NOT NULL,
                 "roles_id" uuid NOT NULL,
                 CONSTRAINT "PK_8b06e2ba94474e062a02081be61" PRIMARY KEY ("user_id", "roles_id")
             )
         `);
         await queryRunner.query(`
-            CREATE INDEX "IDX_76bfcdfc62322ea0a088cea9ef" ON "user_roles_roles" ("user_id")
+            CREATE INDEX "IDX_76bfcdfc62322ea0a088cea9ef" ON "users_roles_roles" ("user_id")
         `);
         await queryRunner.query(`
-            CREATE INDEX "IDX_1ab50aa885c7b2a4de17b48d3d" ON "user_roles_roles" ("roles_id")
+            CREATE INDEX "IDX_1ab50aa885c7b2a4de17b48d3d" ON "users_roles_roles" ("roles_id")
         `);
         await queryRunner.query(`
             ALTER TABLE "roles_permissions_permissions"
@@ -79,21 +79,21 @@ export class Init1740738826424 implements MigrationInterface {
             ADD CONSTRAINT "FK_35f451c91e5274df9bf05479ab2" FOREIGN KEY ("permissions_id") REFERENCES "permissions"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
         `);
         await queryRunner.query(`
-            ALTER TABLE "user_roles_roles"
+            ALTER TABLE "users_roles_roles"
             ADD CONSTRAINT "FK_76bfcdfc62322ea0a088cea9efc" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
         `);
         await queryRunner.query(`
-            ALTER TABLE "user_roles_roles"
+            ALTER TABLE "users_roles_roles"
             ADD CONSTRAINT "FK_1ab50aa885c7b2a4de17b48d3d9" FOREIGN KEY ("roles_id") REFERENCES "roles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
         `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            ALTER TABLE "user_roles_roles" DROP CONSTRAINT "FK_1ab50aa885c7b2a4de17b48d3d9"
+            ALTER TABLE "users_roles_roles" DROP CONSTRAINT "FK_1ab50aa885c7b2a4de17b48d3d9"
         `);
         await queryRunner.query(`
-            ALTER TABLE "user_roles_roles" DROP CONSTRAINT "FK_76bfcdfc62322ea0a088cea9efc"
+            ALTER TABLE "users_roles_roles" DROP CONSTRAINT "FK_76bfcdfc62322ea0a088cea9efc"
         `);
         await queryRunner.query(`
             ALTER TABLE "roles_permissions_permissions" DROP CONSTRAINT "FK_35f451c91e5274df9bf05479ab2"
@@ -108,7 +108,7 @@ export class Init1740738826424 implements MigrationInterface {
             DROP INDEX "public"."IDX_76bfcdfc62322ea0a088cea9ef"
         `);
         await queryRunner.query(`
-            DROP TABLE "user_roles_roles"
+            DROP TABLE "users_roles_roles"
         `);
         await queryRunner.query(`
             DROP INDEX "public"."IDX_35f451c91e5274df9bf05479ab"
