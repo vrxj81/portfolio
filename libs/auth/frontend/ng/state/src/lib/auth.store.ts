@@ -35,6 +35,7 @@ type AuthState = {
   isActivated: boolean;
   isForgot: boolean;
   isReset: boolean;
+  isRefreshed: boolean;
   selectedId: string | null;
   error: IError | null;
   ability: MongoAbility | null;
@@ -47,6 +48,7 @@ const initialState: AuthState = {
   isActivated: false,
   isForgot: false,
   isReset: false,
+  isRefreshed: false,
   selectedId: null,
   error: null,
   ability: null,
@@ -181,10 +183,12 @@ export const AuthStore = signalStore(
                   localStorage.setItem('refreshToken', refreshToken);
                   patchState(store, addEntity(decoded.user), {
                     ability: updateAbilitiesForUser(decoded.user),
+                    isRefreshed: true,
                   });
                 },
                 error: (error) => patchState(store, { error: error as IError }),
-                finalize: () => patchState(store, { isLoading: false }),
+                finalize: () =>
+                  patchState(store, { isLoading: false, isRefreshed: false }),
               }),
             ),
           ),
