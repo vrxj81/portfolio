@@ -9,6 +9,14 @@ services:
       - '5432:5432'
     volumes:
       - pg_data:/var/lib/postgresql/data
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+    environment:
+      - MP_SMTP_AUTH=jobboard:jobboard123
+    entrypoint: "/mailpit --smtp-auth-allow-insecure"
 
 volumes:
   pg_data:
