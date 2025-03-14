@@ -24,6 +24,9 @@
       "@portfolio/auth-backend-interface": [
         "libs/auth/backend/interface/src/index.ts"
       ],
+      "@portfolio/auth-backend-mailer": [
+        "libs/auth/backend/mailer/src/index.ts"
+      ],
       "@portfolio/auth-frontend-ng-config": [
         "libs/auth/frontend/ng/config/src/index.ts"
       ],
