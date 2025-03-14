@@ -170,6 +170,26 @@ export const AuthStore = signalStore(
           ),
         ),
       ),
+      refreshToken: rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true, error: null })),
+          switchMap((token) =>
+            authService.refreshToken(token).pipe(
+              tapResponse({
+                next: ({ accessToken, refreshToken }) => {
+                  const decoded: { user: IUser } = jwtDecode(accessToken);
+                  localStorage.setItem('refreshToken', refreshToken);
+                  patchState(store, addEntity(decoded.user), {
+                    ability: updateAbilitiesForUser(decoded.user),
+                  });
+                },
+                error: (error) => patchState(store, { error: error as IError }),
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            ),
+          ),
+        ),
+      ),
       canActivate: (action: string, subject: string) => {
         return store.ability()?.can(action, subject);
       },

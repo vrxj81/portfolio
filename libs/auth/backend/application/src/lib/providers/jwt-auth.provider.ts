@@ -152,19 +152,20 @@ export class JwtAuthProvider implements AuthService {
   }
 
   async refreshToken(refreshToken: string): Promise<AuthResponseDto> {
-    let payload: { sub: string};
+    let payload: { sub: string };
     try {
       payload = this.jwtService.verify(refreshToken);
     } catch (e) {
       throw new UnauthorizedException('Invalid refresh token');
     }
-      const user = await this.userRepository.findOne({ where: { id: payload.sub}});
-      if (!user) {
-        throw new UnauthorizedException('User not found');
-      }
-      const { password, ...userData } = user;
-      return this.generateTokens({ sub: payload.sub, user: userData });
-    
+    const user = await this.userRepository.findOne({
+      where: { id: payload.sub },
+    });
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    const { password, ...userData } = user;
+    return this.generateTokens({ sub: payload.sub, user: userData });
   }
 
   private async generateTokens(payload: { sub: string; user: IUser }): Promise<{
