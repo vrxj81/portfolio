@@ -68,4 +68,14 @@ export class AuthService {
         }),
       );
   }
+
+  refreshToken(token: string) {
+    return this.http
+      .post<AuthResponseDto>(`${this.apiUrl}/refresh-token`, { token })
+      .pipe(
+        catchError((error) => {
+          return throwError(() => handleHttpError(error));
+        }),
+      );
+  }
 }
