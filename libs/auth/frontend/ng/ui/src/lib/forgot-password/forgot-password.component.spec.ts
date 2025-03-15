@@ -2,23 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { PortfolioAuthUiForgotPasswordComponent } from './forgot-password.component';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
-import { of } from 'rxjs';
 
 describe('PortfolioAuthUiForgotPasswordComponent', () => {
   let component: PortfolioAuthUiForgotPasswordComponent;
   let fixture: ComponentFixture<PortfolioAuthUiForgotPasswordComponent>;
-  const mockAuthStore = {
-    isForgot: of(false),
-    isLoading: of(false),
-    error: of(null),
-    forgotPassword: jest.fn(),
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      providers: [{ provide: AuthStore, useValue: mockAuthStore }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PortfolioAuthUiForgotPasswordComponent);
@@ -53,20 +44,20 @@ describe('PortfolioAuthUiForgotPasswordComponent', () => {
     );
   });
 
-  it('should call forgotPassword on form submit', () => {
+  it('should emit the email on form submit', () => {
     const emailInput = component.forgotPasswordForm.get('email');
+    let email: string | undefined;
     emailInput?.setValue('test@example.com');
     emailInput?.markAllAsTouched();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     });
+    component.itSubmitted.subscribe((emitted) => { email = emitted; });
 
     const form = fixture.debugElement.query(By.css('form'));
     form.triggerEventHandler('ngSubmit', null);
 
-    expect(mockAuthStore.forgotPassword).toHaveBeenCalledWith(
-      'test@example.com',
-    );
+    expect(email).toBe('test@example.com');
   });
 
   it('should disable submit button when form is invalid', () => {

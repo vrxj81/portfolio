@@ -1,29 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PortfolioAuthUiRegisterFormComponent } from './register-form.component';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { of } from 'rxjs';
+import { RegisterRequestDto } from '@portfolio/common-dtos';
 
 describe('PortfolioAuthUiRegisterFormComponent', () => {
   let component: PortfolioAuthUiRegisterFormComponent;
   let fixture: ComponentFixture<PortfolioAuthUiRegisterFormComponent>;
-
-  const mockAuthStore = {
-    register: jest.fn(),
-    user: jest.fn().mockReturnValue(of(null)),
-    isLoading: jest.fn().mockReturnValue(of(false)),
-  };
+  let registerRequestDto: RegisterRequestDto | undefined;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      providers: [{ provide: AuthStore, useValue: mockAuthStore }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PortfolioAuthUiRegisterFormComponent);
     component = fixture.componentInstance;
+    component.itSubmitted.subscribe((emitted) => {
+      registerRequestDto = emitted;
+    });
     fixture.detectChanges();
   });
 
@@ -91,7 +87,7 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
     });
     component.onSubmit();
 
-    expect(mockAuthStore.register).not.toHaveBeenCalled();
+    expect(registerRequestDto).toBeUndefined();
   });
 
   it('should call authStore.register when form is valid and submitted', () => {
@@ -106,7 +102,7 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
     component.registerForm.setValue(registerRequest);
     component.onSubmit();
 
-    expect(mockAuthStore.register).toHaveBeenCalledWith(registerRequest);
+    expect(registerRequestDto).toEqual(registerRequest);
   });
 
   it('should disable the submit button when form is invalid or loading', () => {
@@ -133,7 +129,7 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
       confirmPassword: 'password',
       role: 'user',
     });
-    mockAuthStore.isLoading.mockReturnValue(of(true));
+    
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     });

@@ -109,16 +109,13 @@ describe('JwtAuthProvider', () => {
           refreshToken: user.accessToken,
         }),
       );
-      expect(mockEventEmitter.emit).toHaveBeenCalledWith(
-        'user.registered',
-        {
-          email: user.email,
-          name: user.username,
-          userId: user.id,
-          token: user.accessToken,
-          registrationRequired: mockAuthConfig.activationRequired,
-        }
-      );
+      expect(mockEventEmitter.emit).toHaveBeenCalledWith('user.registered', {
+        email: user.email,
+        name: user.username,
+        userId: user.id,
+        token: user.accessToken,
+        registrationRequired: mockAuthConfig.activationRequired,
+      });
     });
 
     it('should return a boolean if activation is required', async () => {
@@ -126,16 +123,13 @@ describe('JwtAuthProvider', () => {
       const result = await provider.register(registerRequest);
 
       expect(result).toEqual({ registered: true });
-      expect(mockEventEmitter.emit).toHaveBeenCalledWith(
-        'user.registered',
-        {
-          email: user.email,
-          name: user.username,
-          userId: user.id,
-          token: user.accessToken,
-          registrationRequired: mockAuthConfig.activationRequired,
-        }
-      );
+      expect(mockEventEmitter.emit).toHaveBeenCalledWith('user.registered', {
+        email: user.email,
+        name: user.username,
+        userId: user.id,
+        token: user.accessToken,
+        registrationRequired: mockAuthConfig.activationRequired,
+      });
     });
 
     it('should throw an error if passwords do not match', async () => {
@@ -173,13 +167,10 @@ describe('JwtAuthProvider', () => {
       const result = await provider.activate(user.id, user.accessToken || '');
 
       expect(result).toEqual({ activated: true });
-      expect(mockEventEmitter.emit).toHaveBeenCalledWith(
-        'user.activated',
-        {
-          email: user.email,
-          name: user.username,
-        }
-      );
+      expect(mockEventEmitter.emit).toHaveBeenCalledWith('user.activated', {
+        email: user.email,
+        name: user.username,
+      });
     });
 
     it('should throw an error if activation token is invalid', async () => {
@@ -202,7 +193,7 @@ describe('JwtAuthProvider', () => {
           email: user.email,
           name: user.username,
           token: user.accessToken,
-        }
+        },
       );
     });
 
@@ -228,7 +219,7 @@ describe('JwtAuthProvider', () => {
         {
           email: user.email,
           name: user.username,
-        }
+        },
       );
     });
 

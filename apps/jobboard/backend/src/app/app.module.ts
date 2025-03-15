@@ -66,7 +66,7 @@ import { join } from 'path';
           options: {
             strict: true,
           },
-        }
+        },
       }),
     }),
     EventEmitterModule.forRoot(),

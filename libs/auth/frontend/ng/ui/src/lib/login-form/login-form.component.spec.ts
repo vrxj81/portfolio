@@ -1,32 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PortfolioAuthUiLoginFormComponent } from './login-form.component';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { of } from 'rxjs';
+import { LoginRequestDto } from '@portfolio/common-dtos';
 
 describe('PortfolioAuthUiLoginFormComponent', () => {
   let component: PortfolioAuthUiLoginFormComponent;
   let fixture: ComponentFixture<PortfolioAuthUiLoginFormComponent>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let authStore: any;
-
-  const mockAuthStore = {
-    login: jest.fn(),
-    user: jest.fn().mockReturnValue(of(null)),
-    isLoading: jest.fn().mockReturnValue(of(false)),
-  };
+  let loginRequestDto: LoginRequestDto | undefined;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      providers: [{ provide: AuthStore, useValue: mockAuthStore }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PortfolioAuthUiLoginFormComponent);
     component = fixture.componentInstance;
-    authStore = TestBed.inject(AuthStore);
+    component.itSubmitted.subscribe((emitted) => {  loginRequestDto = emitted; });
     fixture.detectChanges();
   });
 
@@ -64,7 +55,7 @@ describe('PortfolioAuthUiLoginFormComponent', () => {
     });
     component.onSubmit();
 
-    expect(authStore.login).not.toHaveBeenCalled();
+    expect(loginRequestDto).toBeUndefined();
   });
 
   it('should call authStore.login when form is valid and submitted', () => {
@@ -76,7 +67,7 @@ describe('PortfolioAuthUiLoginFormComponent', () => {
     component.loginForm.setValue(loginRequest);
     component.onSubmit();
 
-    expect(authStore.login).toHaveBeenCalledWith(loginRequest);
+    expect(loginRequestDto).toEqual(loginRequest);
   });
 
   it('should disable the submit button when form is invalid or loading', () => {
@@ -97,7 +88,7 @@ describe('PortfolioAuthUiLoginFormComponent', () => {
       email: 'test@example.com',
       password: 'password',
     });
-    mockAuthStore.isLoading.mockReturnValue(of(true));
+    
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     });

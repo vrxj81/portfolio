@@ -16,7 +16,7 @@ services:
       - '8025:8025'
     environment:
       - MP_SMTP_AUTH=jobboard:jobboard123
-    entrypoint: "/mailpit --smtp-auth-allow-insecure"
+    entrypoint: '/mailpit --smtp-auth-allow-insecure'
 
 volumes:
   pg_data:
