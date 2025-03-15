@@ -6,9 +6,9 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: 'register',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiRegisterFormComponent,
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-registration').then(
+            (m) => m.authFrontendNgFeatureRegistrationRoutes,
           ),
         data: {
           role: 'recruiter',
