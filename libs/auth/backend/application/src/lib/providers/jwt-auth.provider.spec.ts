@@ -111,8 +111,13 @@ describe('JwtAuthProvider', () => {
       );
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.registered',
-        expect.any(Object),
-        false,
+        {
+          email: user.email,
+          name: user.username,
+          userId: user.id,
+          token: user.accessToken,
+          registrationRequired: mockAuthConfig.activationRequired,
+        }
       );
     });
 
@@ -123,8 +128,13 @@ describe('JwtAuthProvider', () => {
       expect(result).toEqual({ registered: true });
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.registered',
-        expect.any(Object),
-        true,
+        {
+          email: user.email,
+          name: user.username,
+          userId: user.id,
+          token: user.accessToken,
+          registrationRequired: mockAuthConfig.activationRequired,
+        }
       );
     });
 
@@ -165,7 +175,10 @@ describe('JwtAuthProvider', () => {
       expect(result).toEqual({ activated: true });
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.activated',
-        expect.any(Object),
+        {
+          email: user.email,
+          name: user.username,
+        }
       );
     });
 
@@ -185,7 +198,11 @@ describe('JwtAuthProvider', () => {
       expect(result).toEqual({ forgot: true });
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.forgot-password',
-        expect.any(Object),
+        {
+          email: user.email,
+          name: user.username,
+          token: user.accessToken,
+        }
       );
     });
 
@@ -208,7 +225,10 @@ describe('JwtAuthProvider', () => {
       expect(result).toEqual({ reset: true });
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.reset-password',
-        expect.any(Object),
+        {
+          email: user.email,
+          name: user.username,
+        }
       );
     });
 

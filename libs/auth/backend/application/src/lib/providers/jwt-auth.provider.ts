@@ -59,16 +59,21 @@ export class JwtAuthProvider implements AuthService {
       password: hashedPassword,
       isActive: !this.authConfig.activationRequired,
       roles: [role],
+      accessToken: this.authConfig.activationRequired
+        ? crypto.randomUUID()
+        : undefined,
     });
 
     await this.userRepository.save(newUser);
 
     const { password, ...user } = newUser;
-    this.eventEmitter.emit(
-      'user.registered',
-      user,
-      this.authConfig.activationRequired,
-    );
+    this.eventEmitter.emit('user.registered', {
+      email: user.email,
+      name: user.username,
+      userId: user.id,
+      token: user.accessToken,
+      registrationRequired: this.authConfig.activationRequired,
+    });
     if (this.authConfig.activationRequired) {
       return { registered: true };
     }
@@ -80,6 +85,7 @@ export class JwtAuthProvider implements AuthService {
     const loginUser: IUser | null = await this.userRepository.findOne({
       where: {
         email: loginRequest.email,
+        isActive: true,
       },
       relations: ['roles', 'roles.permissions'],
     });
@@ -108,9 +114,15 @@ export class JwtAuthProvider implements AuthService {
     if (!user) {
       throw new BadRequestException('Invalid activation token');
     }
+    if (user.isActive) {
+      throw new BadRequestException('User already activated');
+    }
     await this.userRepository.update(user, { isActive: true });
     await this.userRepository.save(user);
-    this.eventEmitter.emit('user.activated', user);
+    this.eventEmitter.emit('user.activated', {
+      email: user.email,
+      name: user.username,
+    });
     return { activated: true };
   }
 
@@ -127,7 +139,11 @@ export class JwtAuthProvider implements AuthService {
       accessToken: crypto.randomUUID(),
     });
     await this.userRepository.save(user);
-    this.eventEmitter.emit('user.forgot-password', user);
+    this.eventEmitter.emit('user.forgot-password', {
+      email: user.email,
+      name: user.username,
+      token: user.accessToken,
+    });
     return { forgot: true };
   }
 
@@ -147,7 +163,10 @@ export class JwtAuthProvider implements AuthService {
       password: await hash(newPassword, await genSalt()),
     });
     await this.userRepository.save(user);
-    this.eventEmitter.emit('user.reset-password', user);
+    this.eventEmitter.emit('user.reset-password', {
+      email: user.email,
+      name: user.username,
+    });
     return { reset: true };
   }
 
