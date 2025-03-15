@@ -5,8 +5,8 @@
   </div>
 } @else {
   <portfolio-auth-register-form
-    [isLoading]="isLoading"
-    (onSubmit)="onSubmit($event)"
+    [isLoading]="isLoading()"
+    (itSubmitted)="onSubmit($event)"
   />
   @if (error()) {
     <div>

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 import { PortfolioAuthUiRegisterFormComponent } from '@portfolio/auth-frontend-ng-ui';
@@ -16,8 +21,9 @@ export class AuthFeatureRegistrationComponent {
   readonly isRegistered = this.authStore.isRegistered;
   readonly isLoading = this.authStore.isLoading;
   readonly error = this.authStore.error;
+  readonly role = input<string>();
 
   onSubmit(registerRequestDto: RegisterRequestDto) {
-    this.authStore.register(registerRequestDto);
+    this.authStore.register({ ...registerRequestDto, role: this.role() });
   }
 }
