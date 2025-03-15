@@ -64,28 +64,30 @@ describe('AuthController', () => {
   });
   describe('activate', () => {
     it('should return activated', async () => {
-      expect(await controller.activate('id', 'token')).toEqual({
+      expect(await controller.activate('id', { token: 'token' })).toEqual({
         activated: true,
       });
     });
   });
   describe('forgotPassword', () => {
     it('should return forgot', async () => {
-      expect(await controller.forgotPassword('email')).toEqual({
+      expect(await controller.forgotPassword({ email: 'email' })).toEqual({
         forgot: true,
       });
     });
   });
   describe('resetPassword', () => {
     it('should return reset', async () => {
-      expect(await controller.resetPassword('token', 'password')).toEqual({
+      expect(
+        await controller.resetPassword('token', { password: 'password' }),
+      ).toEqual({
         reset: true,
       });
     });
   });
   describe('refreshToken', () => {
     it('should return a token', async () => {
-      expect(await controller.refreshToken('token')).toEqual({
+      expect(await controller.refreshToken({ token: 'token' })).toEqual({
         accessToken: 'token',
         refreshToken: 'token',
       });
