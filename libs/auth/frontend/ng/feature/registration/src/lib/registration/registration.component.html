@@ -1,7 +1,7 @@
 @if (isRegistered()) {
   <div>
     <span>Registration successful</span>
-    <a [routerLink]="['/auth/login']">Login</a>
+    <span>Your account needs to be activated. An email with an activation link has been sent.</span>
   </div>
 } @else {
   <portfolio-auth-register-form

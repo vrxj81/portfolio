@@ -4,14 +4,13 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 import { PortfolioAuthUiRegisterFormComponent } from '@portfolio/auth-frontend-ng-ui';
 import { RegisterRequestDto } from '@portfolio/common-dtos';
 
 @Component({
   selector: 'portfolio-auth-feature-registration',
-  imports: [PortfolioAuthUiRegisterFormComponent, RouterLink],
+  imports: [PortfolioAuthUiRegisterFormComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
