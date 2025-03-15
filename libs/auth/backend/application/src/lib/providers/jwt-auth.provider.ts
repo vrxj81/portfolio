@@ -117,8 +117,14 @@ export class JwtAuthProvider implements AuthService {
     if (user.isActive) {
       throw new BadRequestException('User already activated');
     }
-    await this.userRepository.update(user, { isActive: true });
-    await this.userRepository.save(user);
+    const activedUser = await this.userRepository.preload({
+      ...user,
+      isActive: true,
+    });
+    if (!activedUser) {
+      throw new BadRequestException('User not found');
+    }
+    await this.userRepository.save(activedUser);
     this.eventEmitter.emit('user.activated', {
       email: user.email,
       name: user.username,
@@ -135,10 +141,14 @@ export class JwtAuthProvider implements AuthService {
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    await this.userRepository.update(user, {
+    const forgotUser = await this.userRepository.preload({
+      ...user,
       accessToken: crypto.randomUUID(),
     });
-    await this.userRepository.save(user);
+    if (!forgotUser) {
+      throw new BadRequestException('User not found');
+    }
+    await this.userRepository.save(forgotUser);
     this.eventEmitter.emit('user.forgot-password', {
       email: user.email,
       name: user.username,
@@ -159,10 +169,14 @@ export class JwtAuthProvider implements AuthService {
     if (!user) {
       throw new BadRequestException('Invalid reset token');
     }
-    await this.userRepository.update(user, {
+    const resetUser = await this.userRepository.preload({
+      ...user,
       password: await hash(newPassword, await genSalt()),
     });
-    await this.userRepository.save(user);
+    if (!resetUser) {
+      throw new BadRequestException('User not found');
+    }
+    await this.userRepository.save(resetUser);
     this.eventEmitter.emit('user.reset-password', {
       email: user.email,
       name: user.username,

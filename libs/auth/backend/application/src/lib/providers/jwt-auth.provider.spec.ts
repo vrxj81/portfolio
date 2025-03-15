@@ -38,7 +38,7 @@ describe('JwtAuthProvider', () => {
     findOne: jest.fn().mockResolvedValue(user),
     create: jest.fn().mockReturnValue(user),
     save: jest.fn().mockReturnValue(user),
-    update: jest.fn((data: Partial<IUser>) => {
+    preload: jest.fn((data: Partial<IUser>) => {
       return { ...user, ...data };
     }),
   };
