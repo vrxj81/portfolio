@@ -36,6 +36,7 @@ describe('UserRegisteredHandler', () => {
         name: mockUser.username,
         userId: mockUser.id,
         token: mockUser.accessToken || '',
+        registrationRequired: true,
       };
       provider.handleUserRegisteredEvent(payload);
       expect(mockEmailService.sendActivationEmail).toHaveBeenCalledWith(
