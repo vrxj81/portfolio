@@ -16,9 +16,9 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'login',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiLoginFormComponent,
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-login').then(
+            (m) => m.authFrontendNgFeatureLoginRoutes,
           ),
       },
       {
