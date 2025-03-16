@@ -33,6 +33,8 @@ describe('JwtAuthProvider', () => {
   (bcrypt.hash as jest.Mock) = hash;
   const compare = jest.fn().mockResolvedValue(true);
   (bcrypt.compare as jest.Mock) = compare;
+  const randomUUID = jest.fn().mockReturnValue('randomUUID');
+  (crypto.randomUUID as jest.Mock) = randomUUID;
 
   const mockUserRepository = {
     findOne: jest.fn().mockResolvedValue(user),
@@ -192,7 +194,7 @@ describe('JwtAuthProvider', () => {
         {
           email: user.email,
           name: user.username,
-          token: user.accessToken,
+          token: 'randomUUID',
         },
       );
     });

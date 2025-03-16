@@ -136,6 +136,7 @@ export class JwtAuthProvider implements AuthService {
     const user: IUser | null = await this.userRepository.findOne({
       where: {
         email: credential,
+        isActive: true,
       },
     });
     if (!user) {
@@ -150,9 +151,9 @@ export class JwtAuthProvider implements AuthService {
     }
     await this.userRepository.save(forgotUser);
     this.eventEmitter.emit('user.forgot-password', {
-      email: user.email,
-      name: user.username,
-      token: user.accessToken,
+      email: forgotUser.email,
+      name: forgotUser.username,
+      token: forgotUser.accessToken,
     });
     return { forgot: true };
   }
