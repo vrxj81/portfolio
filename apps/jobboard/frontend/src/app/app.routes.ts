@@ -29,17 +29,10 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'forgot-password',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiForgotPasswordComponent,
-          ),
-      },
-      {
-        path: 'reset-password/:token',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiResetPasswordComponent,
+        path: 'password',
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-password').then(
+            (m) => m.authFrontendNgFeaturePasswordRoutes,
           ),
       },
     ],
