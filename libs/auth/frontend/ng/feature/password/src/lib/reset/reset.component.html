@@ -1,0 +1,15 @@
+@if (isReset()) {
+  <p>Your password has been reset. You can now log in to your account.</p>
+  <a [routerLink]="['/', 'auth', 'login']">Login</a>
+} @else {
+  <portfolio-auth-reset-password
+    [isLoading]="isLoading()"
+    (itSubmitted)="onSubmit($event)"
+  />
+}
+@if (error()) {
+  <div>
+    <span>{{ error()?.code }}</span>
+    <span>{{ error()?.message }}</span>
+  </div>
+}

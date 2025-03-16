@@ -6,40 +6,33 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: 'register',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiRegisterFormComponent,
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-registration').then(
+            (m) => m.authFrontendNgFeatureRegistrationRoutes,
           ),
-          data: {
-            role: 'recruiter',
-          },
+        data: {
+          role: 'recruiter',
+        },
       },
       {
         path: 'login',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiLoginFormComponent,
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-login').then(
+            (m) => m.authFrontendNgFeatureLoginRoutes,
           ),
       },
       {
         path: 'activate/:id/:token',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiActivateComponentComponent,
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-activation').then(
+            (m) => m.authFrontendNgFeatureActivationRoutes,
           ),
       },
       {
-        path: 'forgot-password',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiForgotPasswordComponent,
-          ),
-      },
-      {
-        path: 'reset-password/:token',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiResetPasswordComponent,
+        path: 'password',
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-password').then(
+            (m) => m.authFrontendNgFeaturePasswordRoutes,
           ),
       },
     ],

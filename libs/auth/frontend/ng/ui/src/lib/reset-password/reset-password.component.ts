@@ -3,8 +3,8 @@ import {
   Component,
   inject,
   input,
+  output,
 } from '@angular/core';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -15,12 +15,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PortfolioAuthUiResetPasswordComponent {
-  private readonly authStore = inject(AuthStore);
   private readonly fb = inject(FormBuilder);
-  readonly isActivated = this.authStore.isActivated;
-  readonly isLoading = this.authStore.isLoading;
-  readonly error = this.authStore.error;
-  readonly token = input.required<string>();
+  readonly isLoading = input.required<boolean>();
+  readonly itSubmitted = output<string>();
   readonly resetPasswordForm = this.fb.group(
     {
       password: this.fb.control('', [Validators.required]),
@@ -41,8 +38,8 @@ export class PortfolioAuthUiResetPasswordComponent {
 
   onSubmit() {
     const password = this.resetPasswordForm.get('password')?.value;
-    if (password) {
-      this.authStore.resetPassword({ token: this.token(), password });
+    if (password && this.resetPasswordForm.valid) {
+      this.itSubmitted.emit(password);
     }
   }
 }

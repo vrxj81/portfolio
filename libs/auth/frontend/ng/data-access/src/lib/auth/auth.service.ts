@@ -49,7 +49,7 @@ export class AuthService {
 
   forgotPassword(email: string) {
     return this.http
-      .post<{ forgot: boolean }>(`${this.apiUrl}/forgot-password`, email)
+      .post<{ forgot: boolean }>(`${this.apiUrl}/forgot-password`, { email })
       .pipe(
         catchError((error) => {
           return throwError(() => handleHttpError(error));
@@ -62,6 +62,16 @@ export class AuthService {
       .patch<{
         reset: boolean;
       }>(`${this.apiUrl}/reset-password/${token}`, { password })
+      .pipe(
+        catchError((error) => {
+          return throwError(() => handleHttpError(error));
+        }),
+      );
+  }
+
+  refreshToken(token: string) {
+    return this.http
+      .post<AuthResponseDto>(`${this.apiUrl}/refresh-token`, { token })
       .pipe(
         catchError((error) => {
           return throwError(() => handleHttpError(error));

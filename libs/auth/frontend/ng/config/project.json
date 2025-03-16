@@ -1,0 +1,29 @@
+{
+  "name": "auth-frontend-ng-config",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/auth/frontend/ng/config/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["scope:frontend", "type:config", "domain:auth"],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "libs/auth/frontend/ng/config/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/auth/frontend/ng/config/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/auth/frontend/ng/config/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

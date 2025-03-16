@@ -75,12 +75,7 @@ export class AuthBackendApplicationModule extends ConfigurableModuleClass {
           JwtAuthProvider,
           JwtStrategy,
         ];
-        exports = [
-          ...exports,
-          AuthService,
-          JwtAuthProvider,
-          JwtStrategy,
-        ];
+        exports = [...exports, AuthService, JwtAuthProvider, JwtStrategy];
     }
     return {
       ...super.register(options),

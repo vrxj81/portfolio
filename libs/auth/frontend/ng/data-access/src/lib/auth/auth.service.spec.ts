@@ -48,17 +48,14 @@ describe('AuthService', () => {
         email: expectedUser.username,
         password: expectedUser.password || '',
       };
-      service.login(loginRequest).subscribe(
-        () => {
-          // handle success
-        },
-        (error) => {
+      service.login(loginRequest).subscribe({
+        error: (error) => {
           expect(error).toEqual('An error occurred');
-        }
-      );
+        },
+      });
       const req = httpController.expectOne('/api/auth/login');
       expect(req.request.method).toBe('POST');
-      req.error(new ErrorEvent('An error occurred'));
+      req.error(new ProgressEvent('error'));
     });
   });
   describe('register', () => {
@@ -83,17 +80,14 @@ describe('AuthService', () => {
         password: expectedUser.password || '',
         confirmPassword: expectedUser.password || '',
       };
-      service.register(registerRequest).subscribe(
-        () => {
-          // handle success
-        },
-        (error) => {
+      service.register(registerRequest).subscribe({
+        error: (error) => {
           expect(error).toEqual('An error occurred');
-        }
-      );
+        },
+      });
       const req = httpController.expectOne('/api/auth/register');
       expect(req.request.method).toBe('POST');
-      req.error(new ErrorEvent('An error occurred'));
+      req.error(new ProgressEvent('An error occurred'));
     });
   });
   describe('activate', () => {
@@ -110,17 +104,14 @@ describe('AuthService', () => {
     it('should throw an error if the request fails', () => {
       const userId = expectedUser.id;
       const token = 'token';
-      service.activate(userId, token).subscribe(
-        () => {
-          // handle success
-        },
-        (error) => {
+      service.activate(userId, token).subscribe({
+        error: (error) => {
           expect(error).toEqual('An error occurred');
-        }
-      );
+        },
+      });
       const req = httpController.expectOne(`/api/auth/activate/${userId}`);
       expect(req.request.method).toBe('PATCH');
-      req.error(new ErrorEvent('An error occurred'));
+      req.error(new ProgressEvent('An error occurred'));
     });
   });
   describe('forgotPassword', () => {
@@ -135,17 +126,14 @@ describe('AuthService', () => {
     });
     it('should throw an error if the request fails', () => {
       const email = expectedUser.email;
-      service.forgotPassword(email).subscribe(
-        () => {
-          // handle success
-        },
-        (error) => {
+      service.forgotPassword(email).subscribe({
+        error: (error) => {
           expect(error).toEqual('An error occurred');
-        }
-      );
+        },
+      });
       const req = httpController.expectOne('/api/auth/forgot-password');
       expect(req.request.method).toBe('POST');
-      req.error(new ErrorEvent('An error occurred'));
+      req.error(new ProgressEvent('An error occurred'));
     });
   });
   describe('resetPassword', () => {
@@ -162,17 +150,36 @@ describe('AuthService', () => {
     it('should throw an error if the request fails', () => {
       const token = 'token';
       const password = 'password';
-      service.resetPassword(token, password).subscribe(
-        () => {
-          // handle success
-        },
-        (error) => {
+      service.resetPassword(token, password).subscribe({
+        error: (error) => {
           expect(error).toEqual('An error occurred');
-        }
-      );
+        },
+      });
       const req = httpController.expectOne(`/api/auth/reset-password/${token}`);
       expect(req.request.method).toBe('PATCH');
-      req.error(new ErrorEvent('An error occurred'));
+      req.error(new ProgressEvent('An error occurred'));
+    });
+  });
+  describe('refreshToken', () => {
+    it('should return an Observable<AuthResponseDto>', () => {
+      const token = 'token';
+      service.refreshToken(token).subscribe((response) => {
+        expect(response).toEqual(expectedUser);
+      });
+      const req = httpController.expectOne('/api/auth/refresh-token');
+      expect(req.request.method).toBe('POST');
+      req.flush(expectedUser);
+    });
+    it('should throw an error if the request fails', () => {
+      const token = 'token';
+      service.refreshToken(token).subscribe({
+        error: (error) => {
+          expect(error).toEqual('An error occurred');
+        },
+      });
+      const req = httpController.expectOne('/api/auth/refresh-token');
+      expect(req.request.method).toBe('POST');
+      req.error(new ProgressEvent('An error occurred'));
     });
   });
 });

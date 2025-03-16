@@ -1,11 +1,16 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 import { RegisterRequestDto } from '@portfolio/common-dtos';
 
 type RegisterForm = {
@@ -22,12 +27,9 @@ type RegisterForm = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PortfolioAuthUiRegisterFormComponent {
-  private readonly authStore = inject(AuthStore);
   private readonly fb = inject(FormBuilder);
-  readonly authUser = this.authStore.user;
-  readonly isLoading = this.authStore.isLoading;
-  readonly error = this.authStore.error;
-  readonly role = input<string>();
+  readonly isLoading = input.required<boolean>();
+  readonly itSubmitted = output<RegisterRequestDto>();
   readonly registerForm = this.fb.group<RegisterForm>(
     {
       username: this.fb.control(null, [Validators.required]),
@@ -49,16 +51,12 @@ export class PortfolioAuthUiRegisterFormComponent {
     },
   );
 
-  constructor() {
-    effect(() => {
-      this.registerForm.get('role')?.patchValue(this.role());
-    });
-  }
-
   onSubmit() {
     if (this.registerForm.valid) {
-      const registerRequest = Object.assign(this.registerForm.value);
-      this.authStore.register(registerRequest);
+      const registerRequest: RegisterRequestDto = Object.assign(
+        this.registerForm.value,
+      );
+      this.itSubmitted.emit(registerRequest);
     }
   }
 }

@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PortfolioAuthUiActivateComponentComponent } from './activate.component';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
-import { of } from 'rxjs';
+import { AuthFeatureActivationComponent } from './activation.component';
 import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 import { ComponentRef } from '@angular/core';
+import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 
-describe('PortfolioAuthUiActivateComponentComponent', () => {
-  let component: PortfolioAuthUiActivateComponentComponent;
-  let fixture: ComponentFixture<PortfolioAuthUiActivateComponentComponent>;
-  let componentRef: ComponentRef<PortfolioAuthUiActivateComponentComponent>;
+describe('AuthFeatureActivationComponent', () => {
+  let component: AuthFeatureActivationComponent;
+  let fixture: ComponentFixture<AuthFeatureActivationComponent>;
+  let componentRef: ComponentRef<AuthFeatureActivationComponent>;
   const mockAuthStore = {
     isActivated: of(false),
     isLoading: of(false),
@@ -18,26 +18,22 @@ describe('PortfolioAuthUiActivateComponentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PortfolioAuthUiActivateComponentComponent],
+      imports: [AuthFeatureActivationComponent],
       providers: [{ provide: AuthStore, useValue: mockAuthStore }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(
-      PortfolioAuthUiActivateComponentComponent,
-    );
+    fixture = TestBed.createComponent(AuthFeatureActivationComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     componentRef.setInput('token', 'test-token');
     componentRef.setInput('id', 'test-userId');
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-    });
+    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
   it('should call activate on init', () => {
     fixture.whenStable().then(() => {
       expect(mockAuthStore.activate).toHaveBeenCalledWith({

@@ -1,0 +1,10 @@
+<portfolio-auth-login-form
+  [isLoading]="isLoading()"
+  (itSubmitted)="onSubmit($event)"
+></portfolio-auth-login-form>
+@if (error()) {
+  <div>
+    <span>{{ error()?.code }}</span>
+    <span>{{ error()?.message }}</span>
+  </div>
+}

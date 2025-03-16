@@ -2,30 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { PortfolioAuthUiResetPasswordComponent } from './reset-password.component';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
-import { of } from 'rxjs';
-import { ComponentRef } from '@angular/core';
 
 describe('PortfolioAuthUiResetPasswordComponent', () => {
   let component: PortfolioAuthUiResetPasswordComponent;
   let fixture: ComponentFixture<PortfolioAuthUiResetPasswordComponent>;
-  let componentRef: ComponentRef<PortfolioAuthUiResetPasswordComponent>;
-  const mockAuthStore = {
-    isActivated: of(true),
-    isLoading: of(false),
-    error: of(null),
-    resetPassword: jest.fn(),
-  };
+  let password: string | undefined;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      providers: [{ provide: AuthStore, useValue: mockAuthStore }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PortfolioAuthUiResetPasswordComponent);
     component = fixture.componentInstance;
-    componentRef = fixture.componentRef;
-    componentRef.setInput('token', 'test-token');
+    component.itSubmitted.subscribe((emitted) => {
+      password = emitted;
+    });
     fixture.detectChanges();
   });
 
@@ -90,10 +82,7 @@ describe('PortfolioAuthUiResetPasswordComponent', () => {
     const form = fixture.debugElement.query(By.css('form'));
     form.triggerEventHandler('ngSubmit', null);
 
-    expect(mockAuthStore.resetPassword).toHaveBeenCalledWith({
-      token: 'test-token',
-      password: 'password',
-    });
+    expect(password).toBe('password');
   });
 
   it('should disable submit button if form is invalid', () => {
@@ -106,7 +95,6 @@ describe('PortfolioAuthUiResetPasswordComponent', () => {
   });
 
   it('should disable submit button if isLoading is true', () => {
-    mockAuthStore.isLoading = of(true);
     fixture.detectChanges();
 
     const submitButton = fixture.debugElement.query(By.css('button'));

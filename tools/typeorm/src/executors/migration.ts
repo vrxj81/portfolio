@@ -9,12 +9,9 @@ const runExecutor: PromiseExecutor<TypeormMigrationExecutorSchema> = async (
   const projectRoot =
     context.projectsConfigurations.projects[context.projectName].root;
   try {
-    execSync(
-      buildCommand(options, projectRoot),
-      {
-        stdio: 'inherit',
-      },
-    );
+    execSync(buildCommand(options, projectRoot), {
+      stdio: 'inherit',
+    });
     return {
       success: true,
     };
@@ -28,9 +25,12 @@ const runExecutor: PromiseExecutor<TypeormMigrationExecutorSchema> = async (
 
 export default runExecutor;
 
-function buildCommand(options: TypeormMigrationExecutorSchema, projectRoot:string): string {
+function buildCommand(
+  options: TypeormMigrationExecutorSchema,
+  projectRoot: string,
+): string {
   let command = `ts-node -r tsconfig-paths/register --project ${projectRoot}/tsconfig.app.json ./node_modules/.bin/typeorm migration:${options.command}`;
-  if (['generate', 'run', 'show', 'revert','show'].includes(options.command)) {
+  if (['generate', 'run', 'show', 'revert', 'show'].includes(options.command)) {
     command = `${command} -d ${projectRoot}/ormconfig.local.ts`;
   }
   if (options.name) {

@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { IUser, IRole } from '@portfolio/common-models';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id!: string;

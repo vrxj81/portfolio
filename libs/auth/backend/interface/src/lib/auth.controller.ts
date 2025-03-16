@@ -25,21 +25,30 @@ export class AuthController {
   @Patch('activate/:id')
   async activate(
     @Param('id') id: string,
-    @Body() token: string,
+    @Body() activateDto: { token: string },
   ): Promise<{ activated: boolean }> {
-    return this.authService.activate(id, token);
+    return this.authService.activate(id, activateDto.token);
   }
 
   @Post('forgot-password')
-  async forgotPassword(@Body() email: string): Promise<{ forgot: boolean }> {
-    return this.authService.forgotPassword(email);
+  async forgotPassword(
+    @Body() forgotDto: { email: string },
+  ): Promise<{ forgot: boolean }> {
+    return this.authService.forgotPassword(forgotDto.email);
   }
 
   @Patch('reset-password/:token')
   async resetPassword(
     @Param('token') token: string,
-    @Body() password: string,
+    @Body() resetDto: { password: string },
   ): Promise<{ reset: boolean }> {
-    return this.authService.resetPassword(token, password);
+    return this.authService.resetPassword(token, resetDto.password);
+  }
+
+  @Post('refresh-token')
+  async refreshToken(
+    @Body() refreshDto: { token: string },
+  ): Promise<AuthResponseDto> {
+    return this.authService.refreshToken(refreshDto.token);
   }
 }

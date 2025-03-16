@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import {
   RegisterRequestDto,
@@ -55,16 +59,21 @@ export class JwtAuthProvider implements AuthService {
       password: hashedPassword,
       isActive: !this.authConfig.activationRequired,
       roles: [role],
+      accessToken: this.authConfig.activationRequired
+        ? crypto.randomUUID()
+        : undefined,
     });
 
     await this.userRepository.save(newUser);
 
     const { password, ...user } = newUser;
-    this.eventEmitter.emit(
-      'user.registered',
-      user,
-      this.authConfig.activationRequired,
-    );
+    this.eventEmitter.emit('user.registered', {
+      email: user.email,
+      name: user.username,
+      userId: user.id,
+      token: user.accessToken,
+      registrationRequired: this.authConfig.activationRequired,
+    });
     if (this.authConfig.activationRequired) {
       return { registered: true };
     }
@@ -76,6 +85,7 @@ export class JwtAuthProvider implements AuthService {
     const loginUser: IUser | null = await this.userRepository.findOne({
       where: {
         email: loginRequest.email,
+        isActive: true,
       },
       relations: ['roles', 'roles.permissions'],
     });
@@ -104,9 +114,21 @@ export class JwtAuthProvider implements AuthService {
     if (!user) {
       throw new BadRequestException('Invalid activation token');
     }
-    await this.userRepository.update(user, { isActive: true });
-    await this.userRepository.save(user);
-    this.eventEmitter.emit('user.activated', user);
+    if (user.isActive) {
+      throw new BadRequestException('User already activated');
+    }
+    const activedUser = await this.userRepository.preload({
+      ...user,
+      isActive: true,
+    });
+    if (!activedUser) {
+      throw new BadRequestException('User not found');
+    }
+    await this.userRepository.save(activedUser);
+    this.eventEmitter.emit('user.activated', {
+      email: user.email,
+      name: user.username,
+    });
     return { activated: true };
   }
 
@@ -114,16 +136,25 @@ export class JwtAuthProvider implements AuthService {
     const user: IUser | null = await this.userRepository.findOne({
       where: {
         email: credential,
+        isActive: true,
       },
     });
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    await this.userRepository.update(user, {
+    const forgotUser = await this.userRepository.preload({
+      ...user,
       accessToken: crypto.randomUUID(),
     });
-    await this.userRepository.save(user);
-    this.eventEmitter.emit('user.forgot-password', user);
+    if (!forgotUser) {
+      throw new BadRequestException('User not found');
+    }
+    await this.userRepository.save(forgotUser);
+    this.eventEmitter.emit('user.forgot-password', {
+      email: forgotUser.email,
+      name: forgotUser.username,
+      token: forgotUser.accessToken,
+    });
     return { forgot: true };
   }
 
@@ -139,12 +170,36 @@ export class JwtAuthProvider implements AuthService {
     if (!user) {
       throw new BadRequestException('Invalid reset token');
     }
-    await this.userRepository.update(user, {
+    const resetUser = await this.userRepository.preload({
+      ...user,
       password: await hash(newPassword, await genSalt()),
     });
-    await this.userRepository.save(user);
-    this.eventEmitter.emit('user.reset-password', user);
+    if (!resetUser) {
+      throw new BadRequestException('User not found');
+    }
+    await this.userRepository.save(resetUser);
+    this.eventEmitter.emit('user.reset-password', {
+      email: user.email,
+      name: user.username,
+    });
     return { reset: true };
+  }
+
+  async refreshToken(refreshToken: string): Promise<AuthResponseDto> {
+    let payload: { sub: string };
+    try {
+      payload = this.jwtService.verify(refreshToken);
+    } catch (e) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+    const user = await this.userRepository.findOne({
+      where: { id: payload.sub },
+    });
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    const { password, ...userData } = user;
+    return this.generateTokens({ sub: payload.sub, user: userData });
   }
 
   private async generateTokens(payload: { sub: string; user: IUser }): Promise<{

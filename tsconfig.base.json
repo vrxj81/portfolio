@@ -24,8 +24,26 @@
       "@portfolio/auth-backend-interface": [
         "libs/auth/backend/interface/src/index.ts"
       ],
+      "@portfolio/auth-backend-mailer": [
+        "libs/auth/backend/mailer/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-config": [
+        "libs/auth/frontend/ng/config/src/index.ts"
+      ],
       "@portfolio/auth-frontend-ng-data-access": [
         "libs/auth/frontend/ng/data-access/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-activation": [
+        "libs/auth/frontend/ng/feature/activation/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-login": [
+        "libs/auth/frontend/ng/feature/login/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-password": [
+        "libs/auth/frontend/ng/feature/password/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-registration": [
+        "libs/auth/frontend/ng/feature/registration/src/index.ts"
       ],
       "@portfolio/auth-frontend-ng-state": [
         "libs/auth/frontend/ng/state/src/index.ts"

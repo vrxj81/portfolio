@@ -20,4 +20,5 @@ export abstract class AuthService {
     token: string,
     newPassword: string,
   ): Promise<{ reset: boolean }>;
+  abstract refreshToken(token: string): Promise<AuthResponseDto>;
 }

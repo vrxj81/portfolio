@@ -5,18 +5,18 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 import { FormBuilder } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthStore } from '@portfolio/auth-frontend-ng-state';
 
 @Component({
-  selector: 'portfolio-auth-activate',
+  selector: 'portfolio-auth-feature-activation',
   imports: [RouterLink],
-  templateUrl: './activate.component.html',
-  styleUrl: './activate.component.scss',
+  templateUrl: './activation.component.html',
+  styleUrl: './activation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PortfolioAuthUiActivateComponentComponent {
+export class AuthFeatureActivationComponent {
   private readonly authStore = inject(AuthStore);
   private readonly fb = inject(FormBuilder);
   readonly isActivated = this.authStore.isActivated;

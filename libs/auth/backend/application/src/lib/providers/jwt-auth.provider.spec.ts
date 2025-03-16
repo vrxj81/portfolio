@@ -33,22 +33,25 @@ describe('JwtAuthProvider', () => {
   (bcrypt.hash as jest.Mock) = hash;
   const compare = jest.fn().mockResolvedValue(true);
   (bcrypt.compare as jest.Mock) = compare;
+  const randomUUID = jest.fn().mockReturnValue('randomUUID');
+  (crypto.randomUUID as jest.Mock) = randomUUID;
 
   const mockUserRepository = {
-    findOneOrFail: jest.fn().mockResolvedValue(user),
+    findOne: jest.fn().mockResolvedValue(user),
     create: jest.fn().mockReturnValue(user),
     save: jest.fn().mockReturnValue(user),
-    update: jest.fn((data: Partial<IUser>) => {
+    preload: jest.fn((data: Partial<IUser>) => {
       return { ...user, ...data };
     }),
   };
 
   const mockRoleRepository = {
-    findOneOrFail: jest.fn().mockResolvedValue(role),
+    findOne: jest.fn().mockResolvedValue(role),
   };
 
   const mockJwtService = {
     sign: jest.fn().mockReturnValue(user.accessToken),
+    verify: jest.fn().mockReturnValue({ sub: user.id }),
   };
 
   const mockEventEmitter = {
@@ -108,11 +111,13 @@ describe('JwtAuthProvider', () => {
           refreshToken: user.accessToken,
         }),
       );
-      expect(mockEventEmitter.emit).toHaveBeenCalledWith(
-        'user.registered',
-        expect.any(Object),
-        false,
-      );
+      expect(mockEventEmitter.emit).toHaveBeenCalledWith('user.registered', {
+        email: user.email,
+        name: user.username,
+        userId: user.id,
+        token: user.accessToken,
+        registrationRequired: mockAuthConfig.activationRequired,
+      });
     });
 
     it('should return a boolean if activation is required', async () => {
@@ -120,11 +125,13 @@ describe('JwtAuthProvider', () => {
       const result = await provider.register(registerRequest);
 
       expect(result).toEqual({ registered: true });
-      expect(mockEventEmitter.emit).toHaveBeenCalledWith(
-        'user.registered',
-        expect.any(Object),
-        true,
-      );
+      expect(mockEventEmitter.emit).toHaveBeenCalledWith('user.registered', {
+        email: user.email,
+        name: user.username,
+        userId: user.id,
+        token: user.accessToken,
+        registrationRequired: mockAuthConfig.activationRequired,
+      });
     });
 
     it('should throw an error if passwords do not match', async () => {
@@ -150,7 +157,7 @@ describe('JwtAuthProvider', () => {
     });
 
     it('should throw an error if credentials are invalid', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
       await expect(provider.login(loginRequest)).rejects.toThrow(
         'Invalid credentials',
       );
@@ -162,14 +169,14 @@ describe('JwtAuthProvider', () => {
       const result = await provider.activate(user.id, user.accessToken || '');
 
       expect(result).toEqual({ activated: true });
-      expect(mockEventEmitter.emit).toHaveBeenCalledWith(
-        'user.activated',
-        expect.any(Object),
-      );
+      expect(mockEventEmitter.emit).toHaveBeenCalledWith('user.activated', {
+        email: user.email,
+        name: user.username,
+      });
     });
 
     it('should throw an error if activation token is invalid', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
 
       await expect(
         provider.activate('invalidId', 'invalidToken'),
@@ -184,12 +191,16 @@ describe('JwtAuthProvider', () => {
       expect(result).toEqual({ forgot: true });
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.forgot-password',
-        expect.any(Object),
+        {
+          email: user.email,
+          name: user.username,
+          token: 'randomUUID',
+        },
       );
     });
 
     it('should throw an error if user is not found', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
 
       await expect(
         provider.forgotPassword('nonexistent@example.com'),
@@ -207,16 +218,45 @@ describe('JwtAuthProvider', () => {
       expect(result).toEqual({ reset: true });
       expect(mockEventEmitter.emit).toHaveBeenCalledWith(
         'user.reset-password',
-        expect.any(Object),
+        {
+          email: user.email,
+          name: user.username,
+        },
       );
     });
 
     it('should throw an error if reset token is invalid', async () => {
-      mockUserRepository.findOneOrFail.mockResolvedValueOnce(null);
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
 
       await expect(
         provider.resetPassword('invalidToken', 'newPassword'),
       ).rejects.toThrow('Invalid reset token');
+    });
+  });
+  describe('refreshToken', () => {
+    it('should refresh token', async () => {
+      const result = await provider.refreshToken(user.accessToken || '');
+
+      expect(result).toEqual({
+        accessToken: user.accessToken,
+        refreshToken: user.accessToken,
+      });
+    });
+    it('should throw an error if refresh token is invalid', async () => {
+      mockJwtService.verify.mockImplementationOnce(() => {
+        throw new Error('Invalid token');
+      });
+
+      await expect(provider.refreshToken('invalidToken')).rejects.toThrow(
+        'Invalid refresh token',
+      );
+    });
+    it('should throw an error if user is not found', async () => {
+      mockUserRepository.findOne.mockResolvedValueOnce(null);
+
+      await expect(provider.refreshToken('invalidToken')).rejects.toThrow(
+        'User not found',
+      );
     });
   });
 });

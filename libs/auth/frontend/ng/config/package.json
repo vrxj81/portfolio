@@ -1,0 +1,8 @@
+{
+  "name": "@portfolio/auth-frontend-ng-config",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^19.1.0"
+  },
+  "sideEffects": false
+}
