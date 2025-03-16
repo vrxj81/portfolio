@@ -36,6 +36,9 @@
       "@portfolio/auth-frontend-ng-feature-activation": [
         "libs/auth/frontend/ng/feature/activation/src/index.ts"
       ],
+      "@portfolio/auth-frontend-ng-feature-login": [
+        "libs/auth/frontend/ng/feature/login/src/index.ts"
+      ],
       "@portfolio/auth-frontend-ng-feature-registration": [
         "libs/auth/frontend/ng/feature/registration/src/index.ts"
       ],
