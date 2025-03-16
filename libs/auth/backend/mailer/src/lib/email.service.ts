@@ -44,7 +44,7 @@ export class EmailService {
       context: {
         email,
         name,
-        url: `http://localhost:4200/auth/reset-password/${token}`,
+        url: `http://localhost:4200/auth/password/reset/${token}`,
       },
     });
   }
