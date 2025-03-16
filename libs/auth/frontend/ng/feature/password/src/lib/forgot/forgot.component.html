@@ -1,0 +1,19 @@
+@if (isForgot()) {
+  <div>
+    <p>
+      A password reset mail has been sent if an account with this email exists
+      and is active.
+    </p>
+  </div>
+} @else {
+  <portfolio-auth-forgot-password
+    [isLoading]="isLoading()"
+    (itSubmitted)="onSubmit($event)"
+  />
+}
+@if (error()) {
+  <div>
+    <span>{{ error()?.code }}</span>
+    <span>{{ error()?.message }}</span>
+  </div>
+}
