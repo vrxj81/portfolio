@@ -52,7 +52,9 @@ describe('PortfolioAuthUiForgotPasswordComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     });
-    component.itSubmitted.subscribe((emitted) => { email = emitted; });
+    component.itSubmitted.subscribe((emitted) => {
+      email = emitted;
+    });
 
     const form = fixture.debugElement.query(By.css('form'));
     form.triggerEventHandler('ngSubmit', null);

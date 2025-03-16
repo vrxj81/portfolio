@@ -129,7 +129,7 @@ describe('PortfolioAuthUiRegisterFormComponent', () => {
       confirmPassword: 'password',
       role: 'user',
     });
-    
+
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     });

@@ -1,0 +1,11 @@
+{
+  "name": "@portfolio/auth-frontend-ng-feature-activation",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^19.1.0",
+    "@angular/forms": "~19.1.0",
+    "@angular/router": "~19.1.0",
+    "@portfolio/auth-frontend-ng-state": "0.0.1"
+  },
+  "sideEffects": false
+}

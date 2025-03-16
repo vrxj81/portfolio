@@ -17,7 +17,9 @@ describe('PortfolioAuthUiLoginFormComponent', () => {
 
     fixture = TestBed.createComponent(PortfolioAuthUiLoginFormComponent);
     component = fixture.componentInstance;
-    component.itSubmitted.subscribe((emitted) => {  loginRequestDto = emitted; });
+    component.itSubmitted.subscribe((emitted) => {
+      loginRequestDto = emitted;
+    });
     fixture.detectChanges();
   });
 
@@ -88,7 +90,7 @@ describe('PortfolioAuthUiLoginFormComponent', () => {
       email: 'test@example.com',
       password: 'password',
     });
-    
+
     fixture.whenStable().then(() => {
       fixture.detectChanges();
     });

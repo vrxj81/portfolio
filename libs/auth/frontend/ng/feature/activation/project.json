@@ -1,0 +1,36 @@
+{
+  "name": "auth-frontend-ng-feature-activation",
+  "$schema": "../../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/auth/frontend/ng/feature/activation/src",
+  "prefix": "portfolio",
+  "projectType": "library",
+  "tags": ["scope:frontend", "type:feature", "domain:auth"],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "libs/auth/frontend/ng/feature/activation/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/auth/frontend/ng/feature/activation/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/auth/frontend/ng/feature/activation/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/auth/frontend/ng/feature/activation/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
