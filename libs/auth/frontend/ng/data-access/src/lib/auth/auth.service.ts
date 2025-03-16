@@ -49,7 +49,7 @@ export class AuthService {
 
   forgotPassword(email: string) {
     return this.http
-      .post<{ forgot: boolean }>(`${this.apiUrl}/forgot-password`, email)
+      .post<{ forgot: boolean }>(`${this.apiUrl}/forgot-password`, { email })
       .pipe(
         catchError((error) => {
           return throwError(() => handleHttpError(error));
