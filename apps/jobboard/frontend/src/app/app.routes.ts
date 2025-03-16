@@ -23,9 +23,9 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'activate/:id/:token',
-        loadComponent: () =>
-          import('@portfolio/auth-frontend-ng-ui').then(
-            (m) => m.PortfolioAuthUiActivateComponentComponent,
+        loadChildren: () =>
+          import('@portfolio/auth-frontend-ng-feature-activation').then(
+            (m) => m.authFrontendNgFeatureActivationRoutes,
           ),
       },
       {
