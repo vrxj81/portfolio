@@ -1,0 +1,12 @@
+{
+  "name": "@portfolio/auth-frontend-ng-feature-registration",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^19.1.0",
+    "@angular/router": "19.2.2",
+    "@portfolio/auth-frontend-ng-state": "0.0.1",
+    "@portfolio/auth-frontend-ng-ui": "0.0.1",
+    "@portfolio/common-dtos": "0.0.1"
+  },
+  "sideEffects": false
+}

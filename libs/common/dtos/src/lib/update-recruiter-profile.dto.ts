@@ -1,37 +1,22 @@
-import { IRecruiterProfile, IUser } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested, IsString } from 'class-validator';
-import { UpdateUserDto } from './update-user.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-export class UpdateRecruiterProfileDto
-  implements Partial<Omit<IRecruiterProfile, 'createdAt' | 'updatedAt'>>
-{
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => UpdateUserDto)
-  user?: IUser;
+export const UpdateRecruiterProfileSchema = Type.Object({
+  user: Type.Optional(
+    Type.Object({
+      id: Type.String(),
+      username: Type.String(),
+      email: Type.String(),
+      role: Type.String(),
+    }),
+  ),
+  fullName: Type.Optional(Type.String()),
+  company: Type.Optional(Type.String()),
+  position: Type.Optional(Type.String()),
+  bio: Type.Optional(Type.String()),
+  contactEmail: Type.Optional(Type.String()),
+  contactPhone: Type.Optional(Type.String()),
+});
 
-  @IsOptional()
-  @IsString()
-  fullName?: string;
-
-  @IsOptional()
-  @IsString()
-  company?: string;
-
-  @IsOptional()
-  @IsString()
-  position?: string;
-
-  @IsOptional()
-  @IsString()
-  bio?: string;
-
-  @IsOptional()
-  @IsString()
-  contactEmail?: string;
-
-  @IsOptional()
-  @IsString()
-  contactPhone?: string;
-}
+export type UpdateRecruiterProfileDto = Static<
+  typeof UpdateRecruiterProfileSchema
+>;

@@ -1,0 +1,12 @@
+{
+  "name": "@portfolio/auth-frontend-ng-data-access",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^19.1.0",
+    "@angular/core": "^19.1.0",
+    "@portfolio/common-dtos": "0.0.1",
+    "rxjs": "~7.8.0",
+    "@portfolio/frontend-util-error-handler": "0.0.1"
+  },
+  "sideEffects": false
+}

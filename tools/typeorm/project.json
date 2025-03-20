@@ -1,0 +1,48 @@
+{
+  "name": "typeorm",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/typeorm/src",
+  "projectType": "library",
+  "tags": ["scope:tools", "type:plugin", "domain:typeorm"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/tools/typeorm",
+        "main": "tools/typeorm/src/index.ts",
+        "tsConfig": "tools/typeorm/tsconfig.lib.json",
+        "assets": [
+          "tools/typeorm/*.md",
+          {
+            "input": "./tools/typeorm/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/typeorm/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/typeorm",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./tools/typeorm",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "tools/typeorm/jest.config.ts"
+      }
+    }
+  }
+}

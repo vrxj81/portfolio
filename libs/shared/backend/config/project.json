@@ -1,0 +1,19 @@
+{
+  "name": "backend-config",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/backend/config/src",
+  "projectType": "library",
+  "tags": ["scope:backend", "type:config", "domain:shared"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/backend/config",
+        "main": "libs/shared/backend/config/src/index.ts",
+        "tsConfig": "libs/shared/backend/config/tsconfig.lib.json",
+        "assets": ["libs/shared/backend/config/*.md"]
+      }
+    }
+  }
+}

@@ -11,3 +11,6 @@ export * from './lib/update-applicant-profile.dto';
 export * from './lib/update-user.dto';
 export * from './lib/update-role.dto';
 export * from './lib/update-permission.dto';
+export * from './lib/auth-response.dto';
+export * from './lib/login-request.dto';
+export * from './lib/register-request.dto';

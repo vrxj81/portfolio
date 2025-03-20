@@ -1,0 +1,26 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

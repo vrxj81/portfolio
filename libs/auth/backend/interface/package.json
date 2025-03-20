@@ -1,0 +1,14 @@
+{
+  "name": "@portfolio/auth-backend-interface",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@nestjs/common": "11.0.10",
+    "@portfolio/auth-backend-application": "0.0.1",
+    "@portfolio/common-dtos": "0.0.1"
+  }
+}

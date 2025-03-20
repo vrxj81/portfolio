@@ -1,0 +1,13 @@
+{
+  "name": "@portfolio/typeorm",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "dependencies": {
+    "@nx/devkit": "20.6.2",
+    "@swc/helpers": "~0.5.11"
+  },
+  "executors": "./executors.json"
+}

@@ -1,72 +1,22 @@
-import {
-  IsString,
-  IsOptional,
-  IsEnum,
-  IsDate,
-  IsArray,
-  ValidateNested,
-} from 'class-validator';
-import { Type } from 'class-transformer';
-import {
-  IApplicantProfile,
-  IJob,
-  IRecruiterProfile,
-} from '@portfolio/common-models';
-import { SalaryRangeDto } from './salary-range.dto';
-import { CreateRecruiterProfileDto } from './create-recruiter-profile.dto';
-import { CreateApplicantProfileDto } from './create-applicant-profile.dto';
+import { Type, Static } from '@sinclair/typebox';
+import { SalaryRangeSchema } from './salary-range.dto';
 
-// Job DTOs
-export class CreateJobDto
-  implements Omit<IJob, 'id' | 'createdAt' | 'updatedAt'>
-{
-  @IsString()
-  title!: string;
+export const CreateJobSchema = Type.Object({
+  title: Type.String(),
+  description: Type.String(),
+  company: Type.String(),
+  location: Type.String(),
+  salaryRange: Type.Optional(SalaryRangeSchema),
+  employmentType: Type.Union([
+    Type.Literal('Full-time'),
+    Type.Literal('Part-time'),
+    Type.Literal('Contract'),
+    Type.Literal('Temporary'),
+    Type.Literal('Internship'),
+  ]),
+  postedDate: Type.String({ format: 'date-time' }),
+  applicationDeadline: Type.Optional(Type.String({ format: 'date-time' })),
+  requirements: Type.Array(Type.String()),
+});
 
-  @IsString()
-  description!: string;
-
-  @IsString()
-  company!: string;
-
-  @IsString()
-  location!: string;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => SalaryRangeDto)
-  salaryRange?: SalaryRangeDto;
-
-  @IsEnum(['Full-time', 'Part-time', 'Contract', 'Temporary', 'Internship'])
-  employmentType!:
-    | 'Full-time'
-    | 'Part-time'
-    | 'Contract'
-    | 'Temporary'
-    | 'Internship';
-
-  @IsDate()
-  postedDate!: Date;
-
-  @IsOptional()
-  @IsDate()
-  applicationDeadline?: Date;
-
-  @IsArray()
-  @IsString({ each: true })
-  requirements!: string[];
-
-  @IsArray()
-  @IsString({ each: true })
-  responsibilities!: string[];
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => CreateRecruiterProfileDto)
-  recruiter?: IRecruiterProfile;
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => CreateApplicantProfileDto)
-  applicants?: IApplicantProfile[];
-}
+export type CreateJobDto = Static<typeof CreateJobSchema>;

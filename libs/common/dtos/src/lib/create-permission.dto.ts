@@ -1,41 +1,20 @@
-import { IPermission, IRole } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import { CreateRoleDto } from './create-role.dto';
-import {
-  ValidateNested,
-  IsOptional,
-  IsString,
-  IsArray,
-  IsDate,
-} from 'class-validator';
+import { Type, Static } from '@sinclair/typebox';
 
-export class CreatePermissionDto
-  implements Omit<IPermission, 'id' | 'createdAt' | 'updatedAt'>
-{
-  @IsString()
-  name!: string;
+export const CreatePermissionSchema = Type.Object({
+  name: Type.String(),
+  action: Type.String(),
+  subject: Type.String(),
+  conditions: Type.Optional(Type.String()),
+  roles: Type.Optional(
+    Type.Array(
+      Type.Object({
+        name: Type.String(),
+        description: Type.Optional(Type.String()),
+      }),
+    ),
+  ),
+  createdAt: Type.Optional(Type.String({ format: 'date-time' })),
+  updatedAt: Type.Optional(Type.String({ format: 'date-time' })),
+});
 
-  @IsString()
-  action!: string;
-
-  @IsString()
-  subject!: string;
-
-  @IsOptional()
-  @IsString()
-  conditions?: string;
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateRoleDto)
-  roles?: IRole[];
-
-  @IsOptional()
-  @IsDate()
-  createdAt?: Date;
-
-  @IsOptional()
-  @IsDate()
-  updatedAt?: Date;
-}
+export type CreatePermissionDto = Static<typeof CreatePermissionSchema>;

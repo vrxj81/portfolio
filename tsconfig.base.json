@@ -15,11 +15,65 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@portfolio/auth-backend-application": [
+        "libs/auth/backend/application/src/index.ts"
+      ],
+      "@portfolio/auth-backend-config": [
+        "libs/auth/backend/config/src/index.ts"
+      ],
+      "@portfolio/auth-backend-interface": [
+        "libs/auth/backend/interface/src/index.ts"
+      ],
+      "@portfolio/auth-backend-mailer": [
+        "libs/auth/backend/mailer/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-config": [
+        "libs/auth/frontend/ng/config/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-data-access": [
+        "libs/auth/frontend/ng/data-access/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-activation": [
+        "libs/auth/frontend/ng/feature/activation/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-login": [
+        "libs/auth/frontend/ng/feature/login/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-password": [
+        "libs/auth/frontend/ng/feature/password/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-feature-registration": [
+        "libs/auth/frontend/ng/feature/registration/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-state": [
+        "libs/auth/frontend/ng/state/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-ui": [
+        "libs/auth/frontend/ng/ui/src/index.ts"
+      ],
+      "@portfolio/auth-frontend-ng-util": [
+        "libs/auth/frontend/ng/util/src/index.ts"
+      ],
+      "@portfolio/backend-config": ["libs/shared/backend/config/src/index.ts"],
+      "@portfolio/backend-data-access-permissions": [
+        "libs/shared/backend/data-access/permissions/src/index.ts"
+      ],
+      "@portfolio/backend-data-access-roles": [
+        "libs/shared/backend/data-access/roles/src/index.ts"
+      ],
+      "@portfolio/backend-data-access-users": [
+        "libs/shared/backend/data-access/users/src/index.ts"
+      ],
       "@portfolio/common-dtos": ["libs/common/dtos/src/index.ts"],
       "@portfolio/common-models": ["libs/common/interfaces/src/index.ts"],
+      "@portfolio/frontend-util-error-handler": [
+        "libs/shared/frontend/util/error-handler/src/index.ts"
+      ],
+      "@portfolio/styles-scss": ["libs/shared/styles/scss/src/index.scss"],
       "@portfolio/testing-data-mocks-util": [
         "libs/shared/testing/data-mocks/util/src/index.ts"
-      ]
+      ],
+      "@portfolio/typeorm": ["tools/typeorm/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

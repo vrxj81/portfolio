@@ -1,79 +1,47 @@
-import {
-  IJob,
-  IRecruiterProfile,
-  IApplicantProfile,
-} from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsDate,
-  IsEnum,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
-import { SalaryRangeDto } from './salary-range.dto';
-import { UpdateRecruiterProfileDto } from './update-recruiter-profile.dto';
-import { UpdateApplicantProfileDto } from './update-applicant-profile.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-export class UpdateJobDto
-  implements Partial<Omit<IJob, 'id' | 'createdAt' | 'updatedAt'>>
-{
-  @IsOptional()
-  @IsString()
-  title?: string;
+export const UpdateJobSchema = Type.Object({
+  title: Type.Optional(Type.String()),
+  description: Type.Optional(Type.String()),
+  company: Type.Optional(Type.String()),
+  location: Type.Optional(Type.String()),
+  salaryRange: Type.Optional(
+    Type.Object({
+      min: Type.Number(),
+      max: Type.Number(),
+    }),
+  ),
+  employmentType: Type.Optional(
+    Type.Union([
+      Type.Literal('Full-time'),
+      Type.Literal('Part-time'),
+      Type.Literal('Contract'),
+      Type.Literal('Temporary'),
+      Type.Literal('Internship'),
+    ]),
+  ),
+  postedDate: Type.Optional(Type.String()),
+  applicationDeadline: Type.Optional(Type.String()),
+  requirements: Type.Optional(Type.Array(Type.String())),
+  responsibilities: Type.Optional(Type.Array(Type.String())),
+  recruiter: Type.Optional(
+    Type.Object({
+      name: Type.String(),
+      email: Type.String(),
+      phoneNumber: Type.String(),
+      company: Type.String(),
+    }),
+  ),
+  applicants: Type.Optional(
+    Type.Array(
+      Type.Object({
+        name: Type.String(),
+        email: Type.String(),
+        phoneNumber: Type.String(),
+        resume: Type.String(),
+      }),
+    ),
+  ),
+});
 
-  @IsOptional()
-  @IsString()
-  description?: string;
-
-  @IsOptional()
-  @IsString()
-  company?: string;
-
-  @IsOptional()
-  @IsString()
-  location?: string;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => SalaryRangeDto)
-  salaryRange?: SalaryRangeDto;
-
-  @IsOptional()
-  @IsEnum(['Full-time', 'Part-time', 'Contract', 'Temporary', 'Internship'])
-  employmentType?:
-    | 'Full-time'
-    | 'Part-time'
-    | 'Contract'
-    | 'Temporary'
-    | 'Internship';
-
-  @IsOptional()
-  @IsDate()
-  postedDate?: Date;
-
-  @IsOptional()
-  @IsDate()
-  applicationDeadline?: Date;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  requirements?: string[];
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  responsibilities?: string[];
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => UpdateRecruiterProfileDto)
-  recruiter?: IRecruiterProfile;
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => UpdateApplicantProfileDto)
-  applicants?: IApplicantProfile[];
-}
+export type UpdateJobDto = Static<typeof UpdateJobSchema>;

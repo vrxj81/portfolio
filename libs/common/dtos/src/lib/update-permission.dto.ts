@@ -1,30 +1,19 @@
-import { IPermission, IRole } from '@portfolio/common-models';
-import { Type } from 'class-transformer';
-import { ValidateNested, IsOptional, IsString, IsArray } from 'class-validator';
-import { UpdateRoleDto } from './update-role.dto';
+import { Type, Static } from '@sinclair/typebox';
 
-export class UpdatePermissionDto
-  implements Partial<Omit<IPermission, 'id' | 'createdAt' | 'updatedAt'>>
-{
-  @IsOptional()
-  @IsString()
-  name?: string;
+export const UpdatePermissionSchema = Type.Object({
+  name: Type.Optional(Type.String()),
+  action: Type.Optional(Type.String()),
+  subject: Type.Optional(Type.String()),
+  conditions: Type.Optional(Type.String()),
+  roles: Type.Optional(
+    Type.Array(
+      Type.Object({
+        id: Type.String(),
+        name: Type.Optional(Type.String()),
+        description: Type.Optional(Type.String()),
+      }),
+    ),
+  ),
+});
 
-  @IsOptional()
-  @IsString()
-  action?: string;
-
-  @IsOptional()
-  @IsString()
-  subject?: string;
-
-  @IsOptional()
-  @IsString()
-  conditions?: string;
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => UpdateRoleDto)
-  roles?: IRole[];
-}
+export type UpdatePermissionDto = Static<typeof UpdatePermissionSchema>;

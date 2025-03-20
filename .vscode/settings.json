@@ -1,0 +1,15 @@
+{
+  "eslint.validate": ["json"],
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "jobboard",
+      "database": "jobboard",
+      "username": "jobboard",
+      "password": "jobboard123"
+    }
+  ]
+}

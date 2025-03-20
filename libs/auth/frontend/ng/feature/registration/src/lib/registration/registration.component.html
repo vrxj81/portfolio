@@ -1,0 +1,20 @@
+@if (isRegistered()) {
+  <div>
+    <span>Registration successful</span>
+    <span
+      >Your account needs to be activated. An email with an activation link has
+      been sent.</span
+    >
+  </div>
+} @else {
+  <portfolio-auth-register-form
+    [isLoading]="isLoading()"
+    (itSubmitted)="onSubmit($event)"
+  />
+  @if (error()) {
+    <div>
+      <span>{{ error()?.code }}</span>
+      <span>{{ error()?.message }}</span>
+    </div>
+  }
+}
